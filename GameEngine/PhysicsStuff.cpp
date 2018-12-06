@@ -225,10 +225,29 @@ void DoPhysicsUpdate( double fDeltaTime,
 
 						if (glm::distance(closestPointToTri, pCurObj->position) <= pSphereA->radius)
 						{
+							cMeshObject* pPlayer = findObjectByFriendlyName("xwing");
 							//pCurObj->velocity = glm::vec3(0.0f);
-							if (pCurObj->friendlyName == "DebugSphereLeft") { std::cout << " collision Left Wing" << std::endl; }
-							if (pCurObj->friendlyName == "DebugSphereRight") { std::cout << " collision Right Wing " << std::endl; }
-							if (pCurObj->friendlyName == "DebugSphereNose") { std::cout << " collision Nose " << std::endl; }
+							if (pCurObj->friendlyName == "DebugSphereLeft") 
+							{ 
+								pCurObj->bIsVisible = true;
+								std::cout << " collision Left Wing" << std::endl;
+								pPlayer->bIsUpdatedByPhysics = false;
+								b_landingMode = true;
+							}
+							if (pCurObj->friendlyName == "DebugSphereRight") 
+							{ 
+								pCurObj->bIsVisible = true;
+								std::cout << " collision Right Wing " << std::endl;
+								pPlayer->bIsUpdatedByPhysics = false;
+								b_landingMode = true;
+							}
+							if (pCurObj->friendlyName == "DebugSphereNose") 
+							{ 
+								pCurObj->bIsVisible = true;
+								std::cout << " collision Nose " << std::endl;
+								pPlayer->bIsUpdatedByPhysics = false;
+								b_landingMode = true;
+							}
 						}
 
 					}

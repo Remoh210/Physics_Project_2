@@ -330,11 +330,11 @@ int main(void)
 	std::vector<sNVPair> vecInitValues;
 
 	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
-	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0, 1.5, 0);
-	sNVPair minDistance;				minDistance.fValue = 2;
-	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 5;
-	sNVPair maxSpeed;					maxSpeed.fValue = 9;
-	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("mig");
+	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
+	sNVPair minDistance;				minDistance.fValue = 10;
+	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 15;
+	sNVPair maxSpeed;					maxSpeed.fValue = 50;
+	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("xwing");
 	sNVPair Time;						Time.fValue = 150;
 
 	vecInitValues.push_back(ObjectToMove);
@@ -354,7 +354,7 @@ int main(void)
 
 	//::p_LuaScripts->LoadScriptFile("example.lua");
 
-
+	
 
 
 	//*****************************************************************
@@ -393,8 +393,7 @@ int main(void)
 			                                15000.0f );	// Far clipping plane
 
 
-		//glm::vec3 migpos = findObjectByFriendlyName("mig")->position;
-		//matView = glm::lookAt(camera.Position, migpos, camera.WorldUp);
+
 
 		matView = camera.GetViewMatrix();
 
@@ -417,7 +416,7 @@ int main(void)
 //HACK: Draw Debug AABBs...
 
 // Get that from FindObjectByID()
-			cMeshObject* pTheBunny = findObjectByFriendlyName("mig");
+			cMeshObject* pTheBunny = findObjectByFriendlyName("xwing");
 			cMeshObject* pter = findObjectByFriendlyName("terrain");
 			// Highlight the AABB that the rabbit is in (Or the CENTRE of the rabbit, anyway)
 
@@ -586,7 +585,9 @@ int main(void)
 		}//for ( unsigned int objIndex = 0; 
 
 
+		//SPIN THE EARTH!!!!
 
+		findObjectByFriendlyName("earth")->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0003f, 0.0f), false);
 		//REFLECTION
 
 		//{

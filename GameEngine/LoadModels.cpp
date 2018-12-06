@@ -46,9 +46,9 @@ void LoadModelTypes( cVAOMeshManager* pTheVAOMeshManager, GLuint shaderProgramID
 	pTheVAOMeshManager->LoadModelIntoVAO(sphereInvertedNormalsInfo, shaderProgramID);
 
 
-	sModelDrawInfo mig;
-	mig.meshFileName = "mig.ply";			// "Sphere_320_faces_xyz.ply";
-	pTheVAOMeshManager->LoadModelIntoVAO(mig, shaderProgramID);
+	//sModelDrawInfo mig;
+	//mig.meshFileName = "mig.ply";			// "Sphere_320_faces_xyz.ply";
+	//pTheVAOMeshManager->LoadModelIntoVAO(mig, shaderProgramID);
 	//sModelDrawInfo roomInfo;
 	//roomInfo.meshFileName = "roomUV.ply";			// "Sphere_320_faces_xyz.ply";
 	//pTheVAOMeshManager->LoadModelIntoVAO(roomInfo, shaderProgramID);
@@ -385,7 +385,7 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 		pSphereLeft->bIsWireFrame = true;
 		pSphereLeft->bDontLight = true;
 		pSphereLeft->bIsVisible = false;
-		float scale = 0.25f;
+		float scale = 1.0f;
 		pSphereLeft->nonUniformScale = glm::vec3(scale, scale, scale);
 		pSphereLeft->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		pSphereLeft->bIsUpdatedByPhysics = true;
@@ -399,15 +399,15 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 
 	{	// This sphere is the tiny little debug sphere
 		cMeshObject* pSphereRight = new cMeshObject();
-		pSphereRight->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pSphereRight->setDiffuseColour(glm::vec3(0.0f, 0.0f, 1.0f));
 		pSphereRight->friendlyName = "DebugSphereRight";
 		pSphereRight->meshName = "Sphere_320.ply";
 		pSphereRight->bIsWireFrame = true;
 		pSphereRight->bIsVisible = false;
 		pSphereRight->bDontLight = true;
-		float scale = 0.25f;
+		float scale = 1.0f;
 		pSphereRight->nonUniformScale = glm::vec3(scale, scale, scale);
-		pSphereRight->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		pSphereRight->position = glm::vec3(0.0f, 1.0f, 0.0f);
 		pSphereRight->bIsUpdatedByPhysics = true;
 		pSphereRight->bIsDebug = true;
 		pSphereRight->pDebugRenderer = ::g_pDebugRenderer;
@@ -419,12 +419,12 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 
 	{	// This sphere is the tiny little debug sphere
 		cMeshObject* pSphereNose = new cMeshObject();
-		pSphereNose->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pSphereNose->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
 		pSphereNose->friendlyName = "DebugSphereNose";
 		pSphereNose->meshName = "Sphere_320.ply";
 		pSphereNose->bIsWireFrame = true;
 		pSphereNose->bDontLight = true;
-		float scale = 0.25f;
+		float scale = 1.0f;
 		pSphereNose->nonUniformScale = glm::vec3(scale, scale, scale);
 		pSphereNose->position = glm::vec3(0.0f, 0.0f, 0.0f);
 		pSphereNose->bIsUpdatedByPhysics = true;

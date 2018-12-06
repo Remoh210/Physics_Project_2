@@ -8,22 +8,22 @@
 
 void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 {
-	cMeshObject* pPlayer = findObjectByFriendlyName("mig");
+	cMeshObject* pPlayer = findObjectByFriendlyName("xwing");
 	cMeshObject* pDebugSphereLeft = findObjectByFriendlyName("DebugSphereLeft");
 	cMeshObject* pDebugSphereRight = findObjectByFriendlyName("DebugSphereRight");
 	cMeshObject* pDebugSphereNose = findObjectByFriendlyName("DebugSphereNose");
-
-	if (b_landingMode == false) {
-		if (camera.Front.y > 0.3f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f), false); }
-		if (camera.Front.y < -0.3f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f), false); }
-		if (camera.Front.x < 0.3f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.01f, 0.0f), false); }
-		if (camera.Front.x > -0.3f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.01f, 0.0f), false); }
+	
+	if (b_landingMode == false ) {
+		if (camera.Front.y > 0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.005f, 0.0f, 0.0f), false); }
+		if (camera.Front.y < -0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.005f, 0.0f, 0.0f), false); }
+		if (camera.Front.x < 0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.005f, 0.0f), false); }
+		if (camera.Front.x > -0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.005f, 0.0f), false); }
 		glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
 
-		glm::quat qMig29Rotation = pPlayer->getQOrientation();
-		glm::mat4 matQMig29rotation = glm::mat4(qMig29Rotation);
+		glm::quat qPlayer29Rotation = pPlayer->getQOrientation();
+		glm::mat4 matQPlayer29rotation = glm::mat4(qPlayer29Rotation);
 
-		glm::vec4 vecForwardDirection_WorldSpace = matQMig29rotation * vecForwardDirection_ModelSpace;
+		glm::vec4 vecForwardDirection_WorldSpace = matQPlayer29rotation * vecForwardDirection_ModelSpace;
 
 		vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
 
@@ -38,9 +38,9 @@ void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 	//camera.Position = glm::vec3(pPlayer->position.x, pPlayer->position.y, pPlayer->position.z + 1.0f);
 
 
-	glm::vec4 noseContactPoint_ModelSpace = glm::vec4(0.0f, 0.0f, 0.4705f, 1.0f);
-	glm::vec4 leftWingTipContactPoint_ModelSpace = glm::vec4(0.3692f, 0.0f, -0.9f, 1.0f);
-	glm::vec4 rightWingTipContactPoint_ModelSpace = glm::vec4(-0.3692f, 0.0f, -0.9f, 1.0f);
+	glm::vec4 noseContactPoint_ModelSpace = glm::vec4(0.0f, 0.0f, 2.4705f, 1.0f);
+	glm::vec4 leftWingTipContactPoint_ModelSpace = glm::vec4(1.8692f, 0.0f, -1.5f, 1.0f);
+	glm::vec4 rightWingTipContactPoint_ModelSpace = glm::vec4(-1.8692f, 0.0f, -1.5f, 1.0f);
 
 	glm::mat4 matTransform = glm::mat4(1.0f);	
 	glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f),

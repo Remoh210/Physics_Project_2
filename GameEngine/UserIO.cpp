@@ -45,7 +45,7 @@ void key_callback( GLFWwindow* window,
 						  int action, 
 						  int mods)
 {
-
+	
 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
@@ -62,14 +62,17 @@ void key_callback( GLFWwindow* window,
 
 
 
-	//SAVE MODELS
+	//Reset Scene
 	if (key == GLFW_KEY_G && action == GLFW_PRESS)
 	{
-		//saveModelInfo("Models2.txt", vec_pObjectsToDraw);
-		//saveLightInfo("lights.txt", LightManager->vecLights);
+		loadModels("Models2.txt", vec_pObjectsToDraw);
+		loadLights("lights2.txt", LightManager->vecLights);
+		camera.b_controlledByScript = false;
+		loadCameraInfo("camera2.txt");
+		camera.b_controlledByScript = true;
 	}
 
-	//LOAD MODELS
+
 	if (key == GLFW_KEY_H && action == GLFW_PRESS)
 	{
 		SwitchToWireFrame(vec_pObjectsToDraw);
@@ -293,20 +296,32 @@ void ProcessAsynKeys(GLFWwindow* window)
 
 	float cameraSpeed = CAMERA_SPEED_SLOW;
 
+	cMeshObject* pPlayer = findObjectByFriendlyName("xwing");
+
+
+	if(camera.b_controlledByScript){
+	if (glfwGetKey(window, GLFW_KEY_Z))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0f, -0.01f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_X))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0f, 0.01f));
+	}
 
 
 	if (b_landingMode == true)
 	{
-		cMeshObject* pPlayer = findObjectByFriendlyName("mig");
+
 
 		if (glfwGetKey(window, GLFW_KEY_W)) {
 
 			glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
 
-			glm::quat qMig29Rotation = pPlayer->getQOrientation();
-			glm::mat4 matQMig29rotation = glm::mat4(qMig29Rotation);
+			glm::quat qPlayer29Rotation = pPlayer->getQOrientation();
+			glm::mat4 matQPlayer29rotation = glm::mat4(qPlayer29Rotation);
 
-			glm::vec4 vecForwardDirection_WorldSpace = matQMig29rotation * vecForwardDirection_ModelSpace;
+			glm::vec4 vecForwardDirection_WorldSpace = matQPlayer29rotation * vecForwardDirection_ModelSpace;
 
 			vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
 
@@ -340,6 +355,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 		}
 	}
 
+	}
 
 
 
@@ -372,8 +388,8 @@ void ProcessAsynKeys(GLFWwindow* window)
 
 
 		//change colour of the light
-		if ( glfwGetKey( window, GLFW_KEY_Z ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f); 	}//Red
-		if ( glfwGetKey( window, GLFW_KEY_X ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);	}//Green
+		//if ( glfwGetKey( window, GLFW_KEY_Z ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f); 	}//Red
+		//if ( glfwGetKey( window, GLFW_KEY_X ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);	}//Green
 		if ( glfwGetKey( window, GLFW_KEY_C ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);    }//Blue
 		if ( glfwGetKey( window, GLFW_KEY_V ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);	}
 		if ( glfwGetKey( window, GLFW_KEY_B ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	}
@@ -452,12 +468,12 @@ void ProcessAsynKeys(GLFWwindow* window)
 	//OBJECT CONTROL***********************************************************
 	if ( IsAltDown(window) )
 	{	//Object Postiton
-		if ( glfwGetKey( window, GLFW_KEY_W	) )	{ vec_pObjectsToDraw.at(index)->position.z -= cameraSpeed; }
-		if ( glfwGetKey( window, GLFW_KEY_S ) )	{ vec_pObjectsToDraw.at(index)->position.z += cameraSpeed; }
-		if ( glfwGetKey( window, GLFW_KEY_A ) )	{ vec_pObjectsToDraw.at(index)->position.x -= cameraSpeed; }
-		if ( glfwGetKey( window, GLFW_KEY_D ) ) { vec_pObjectsToDraw.at(index)->position.x += cameraSpeed; }
-		if ( glfwGetKey( window, GLFW_KEY_Q ) )	{ vec_pObjectsToDraw.at(index)->position.y -= cameraSpeed; }
-		if ( glfwGetKey( window, GLFW_KEY_E ) )	{ vec_pObjectsToDraw.at(index)->position.y += cameraSpeed; }
+		if ( glfwGetKey( window, GLFW_KEY_W	) )	{ vec_pObjectsToDraw.at(index)->position.z -= cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_S ) )	{ vec_pObjectsToDraw.at(index)->position.z += cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_A ) )	{ vec_pObjectsToDraw.at(index)->position.x -= cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_D ) ) { vec_pObjectsToDraw.at(index)->position.x += cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_Q ) )	{ vec_pObjectsToDraw.at(index)->position.y -= cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_E ) )	{ vec_pObjectsToDraw.at(index)->position.y += cameraSpeed * 0.01; }
 
 		////Object Rotation
 		if (glfwGetKey(window, GLFW_KEY_RIGHT)) { vec_pObjectsToDraw.at(index)->adjMeshOrientationEulerAngles(0.0f, 0.1f, 0.0f, false); }
