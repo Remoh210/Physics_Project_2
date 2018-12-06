@@ -142,11 +142,8 @@ void key_callback( GLFWwindow* window,
 
 	if (key == GLFW_KEY_9 && action == GLFW_PRESS)
 	{
-
-
-		::p_LuaScripts->Update(deltaTime);
-
-		::p_LuaScripts->UpdateCG(deltaTime);
+		//Move Camera to selected Object
+		camera.Position = vec_pObjectsToDraw[index]->position;
 
 	}
 
@@ -154,9 +151,9 @@ void key_callback( GLFWwindow* window,
 	{
 
 
-		::p_LuaScripts->Update(deltaTime);
+		//::p_LuaScripts->Update(deltaTime);
 
-		::p_LuaScripts->UpdateCG(deltaTime);
+		//::p_LuaScripts->UpdateCG(deltaTime);
 		
 	}
 	

@@ -32,7 +32,7 @@ GLuint program;
 cDebugRenderer* g_pDebugRendererACTUAL = NULL;
 iDebugRenderer* g_pDebugRenderer = NULL;
 cLuaBrain* p_LuaScripts = NULL;
-//cCommandGroup sceneCommandGroup;
+cCommandGroup sceneCommandGroup("SceneCG");
 int cou;
 std::vector<cAABB::sAABB_Triangle> vec_cur_AABB_tris;
 void UpdateWindowTitle(void);
@@ -55,6 +55,7 @@ const unsigned int SCR_HEIGHT = 800;
 
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 
+
 bool distToCam(cMeshObject* leftObj, cMeshObject* rightObj) {
 	return glm::distance(leftObj->position, camera.Position) > glm::distance(rightObj->position, camera.Position); // here go your sort conditions
 }
@@ -65,11 +66,9 @@ glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 glm::vec3 g_CameraEye = glm::vec3( 0.0, 0.0, 250.0f );
 
-//glm::vec3 g_CameraAt = glm::vec3(g_CameraEye, g_CameraEye.z + cameraFront.z, cameraUp.y);
-//glm::vec3 g_CameraAt = glm::vec3( 0.0, 0.0, 0.0f );
 
 
-cShaderManager* pTheShaderManager = NULL;		// "Heap" variable
+cShaderManager* pTheShaderManager = NULL;		
 cVAOMeshManager* g_pTheVAOMeshManager = NULL;
 
 cLightManager* LightManager = NULL;
@@ -87,11 +86,7 @@ static void error_callback(int error, const char* description)
 cAABBHierarchy* g_pTheTerrain = new cAABBHierarchy();
 
 
-void DoPhysicsCheckpointNumberFour(double deltaTime);
 
-// For now, I'm doing this here, but you might want to do this
-//  in the object, in the "phsyics" thing, or wherever. 
-//  Or leave it here!!
 void LoadTerrainAABB(void);
 
 
@@ -118,7 +113,7 @@ int main(void)
 
 
 	//CAMERA SPEED
-	camera.MovementSpeed = 1000.0f;
+	//camera.MovementSpeed = 1000.0f;
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -189,18 +184,7 @@ int main(void)
 
 	// Loading the uniform variables here (rather than the inner draw loop)
 	GLint objectColour_UniLoc = glGetUniformLocation(program, "objectColour");
-	//uniform vec3 lightPos;
-	//uniform float lightAtten;
 
-
-//	GLint lightPos_UniLoc = glGetUniformLocation(program, "lightPos");
-//	GLint lightBrightness_UniLoc = glGetUniformLocation(program, "lightBrightness");
-
-	//	// uniform mat4 MVP;	THIS ONE IS NO LONGER USED	
-	//uniform mat4 matModel;	// M
-	//uniform mat4 matView;		// V
-	//uniform mat4 matProj;		// P
-	//GLint mvp_location = glGetUniformLocation(program, "MVP");
 	GLint matModel_location = glGetUniformLocation(program, "matModel");
 	GLint matView_location = glGetUniformLocation(program, "matView");
 	GLint matProj_location = glGetUniformLocation(program, "matProj");
@@ -222,7 +206,7 @@ int main(void)
 
 	// Loading models was moved into this function
 	LoadModelTypes(::g_pTheVAOMeshManager, program);
-	CreateModels("Models.txt", ::g_pTheVAOMeshManager, program);
+	CreateModels("Models2.txt", ::g_pTheVAOMeshManager, program);
 	LoadModelsIntoScene(::vec_pObjectsToDraw);
 
 	//vec_sorted_drawObj = vec_pObjectsToDraw;
@@ -284,7 +268,7 @@ int main(void)
 		pTorch->atten.z = 0.000015f;	//			float quadAtten = 0.001f;
 		pTorch->diffuse = glm::vec4(232 /250.0f, 109 / 250.0f, 27/250.0f, 1.0f);// White light
 		pTorch->param2.x = 0.0f;
-		//pTheForthLight->AtenSphere - false;
+		//pTheForthLight->AtenSphere = false;
 		pTorch->lightName = "Torch_Light" + std::to_string(light_count);
 		LightManager->vecLights.push_back(pTorch);
 		LightManager->LoadUniformLocations(program);
@@ -324,11 +308,11 @@ int main(void)
 	
 
 	//Reload from the file
-//	saveModelInfo("Models.txt", vec_pObjectsToDraw);
-//	saveLightInfo("lights.txt", LightManager->vecLights);
+	//saveModelInfo("Models.txt", vec_pObjectsToDraw);
+	//saveLightInfo("lights.txt", LightManager->vecLights);
 	//loadModels("Models.txt", vec_pObjectsToDraw);
-	loadLights("lights.txt", LightManager->vecLights);
-	loadCameraInfo("camera.txt");
+	loadLights("lights2.txt", LightManager->vecLights);
+	loadCameraInfo("camera2.txt");
 	//HACK; TODO save and load camera look at
 	//camera.b_controlledByScript = true;
 	//camera.SetViewMatrix(glm::lookAt(camera.Position, glm::vec3(285.0f, 245.0f, 825.0f), camera.WorldUp));
@@ -337,10 +321,10 @@ int main(void)
 
 
 
-	::p_LuaScripts = new cLuaBrain();
-	::p_LuaScripts->SetObjectVector(&(::vec_pObjectsToDraw));
+	//::p_LuaScripts = new cLuaBrain();
+	//::p_LuaScripts->SetObjectVector(&(::vec_pObjectsToDraw));
 
-	::p_LuaScripts->LoadScriptFile("example.lua");
+	//::p_LuaScripts->LoadScriptFile("example.lua");
 
 
 
@@ -356,13 +340,6 @@ int main(void)
 
         float ratio;
         int width, height;
-
-		//Front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-		//Front.y = sin(glm::radians(pitch));
-		//Front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
-		//cameraFront = glm::normalize(Front);
-		//Horizontal = glm::normalize(glm::cross(Front, cameraUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-		//Up = glm::normalize(glm::cross(Right, Front));
 
 
 		glm::mat4x4 matProjection = glm::mat4(1.0f);
@@ -529,11 +506,6 @@ int main(void)
 		pSkyBox->bIsVisible = true;
 		pSkyBox->bIsWireFrame = false;
 
-		//		glDisable( GL_CULL_FACE );		// Force drawing the sphere
-		//		                                // Could also invert the normals
-				// Draw the BACK facing (because the normals of the sphere face OUT and we 
-				//  are inside the centre of the sphere..
-		//		glCullFace( GL_FRONT );
 
 		// Bind the cube map texture to the cube map in the shader
 		GLuint cityTextureUNIT_ID = 30;			// Texture unit go from 0 to 79
@@ -590,8 +562,6 @@ int main(void)
 
 
 
-
-
 		//REFLECTION
 
 		//{
@@ -624,9 +594,6 @@ int main(void)
 		//}
 
 
-
-
-
 		// High res timer (likely in ms or ns)
 		currentTime = glfwGetTime();		
 		deltaTime = currentTime - lastTime; 
@@ -651,7 +618,9 @@ int main(void)
 
 		}//for ( unsigned int objIndex = 0; 
 
-		//sceneCommandGroup.Update(deltaTime);
+
+		//Upate Main CommandGroup of current scene
+		sceneCommandGroup.Update(deltaTime);
 		
 
 
@@ -677,7 +646,7 @@ int main(void)
 			{
 
 
-				cMeshObject* pDebugSphere = findObjectByFriendlyName("debugSphere");
+				cMeshObject* pDebugSphere = findObjectByFriendlyName("DebugSphere");
 				pDebugSphere->bIsVisible = true;
 				pDebugSphere->bDontLight = true;
 				glm::vec4 oldDiffuse = pDebugSphere->materialDiffuse;

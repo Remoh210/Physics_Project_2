@@ -133,7 +133,7 @@ bool LoadPlyFileData(std::string fileName)
 
 
 
-//void saveLightInfo(std::string filename, std::vector<sLight*> lights)
+//void createLights(std::string filename, std::vector<sLight*> lights)
 //{
 //	filename = "output/" + filename;
 //	std::string line;
@@ -220,9 +220,6 @@ void saveModelInfo(std::string filename, std::vector<cMeshObject*> models)
 				
 			}
 
-		//	file << "Colour  " << CurModel->objColour.x << " " << CurModel->objColour.y << " " << CurModel->objColour.z << "\n";
-			//pTeapot->meshName = "Utah_Teapot_xyz_n.ply";
-			//pTeapot->setUniformScale(0.4f);
 		}
 		std::cout << "Models information saved to " << filename.c_str() << std::endl;
 		file.close();
@@ -247,7 +244,7 @@ void saveCameraInfo(std::string filename)
 			file << "Camera_Speed " << camera.MovementSpeed << "\n";
 
 
-	//	std::cout << "Models information saved to " << filename.c_str() << std::endl;
+	//	std::cout << "Models information saved to SceneInfo/ " << filename.c_str() << std::endl;
 		file.close();
 	}
 }
@@ -267,21 +264,6 @@ void loadCameraInfo(std::string filename)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Load models Info from the file
 
 
 
@@ -324,7 +306,6 @@ void loadModels(std::string filename, std::vector<cMeshObject*> models)
 		file >> unused >> CurModel->materialDiffuse.x >> CurModel->materialDiffuse.y >> CurModel->materialDiffuse.z >> CurModel->materialDiffuse.w;
 		file >> unused >> CurModel->materialSpecular.x >> CurModel->materialSpecular.y >> CurModel->materialSpecular.z >> CurModel->materialSpecular.w;
 		file >> unused >> CurModel->m_meshQOrientation.x >> CurModel->m_meshQOrientation.y >> CurModel->m_meshQOrientation.z >> CurModel->m_meshQOrientation.w;
-		//		file >> unused >> CurModel->postRotation.x >> CurModel->postRotation.y >> CurModel->postRotation.z;
 		file >> unused >> CurModel->nonUniformScale.x >> CurModel->nonUniformScale.y >> CurModel->nonUniformScale.z;
 		file >> unused >> CurModel->bIsVisible;
 		file >> unused >> CurModel->bIsUpdatedByPhysics;
