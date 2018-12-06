@@ -436,6 +436,22 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 
 	}
 
+
+
+	{
+
+		cMeshObject* pDebugCube = new cMeshObject();
+		pDebugCube->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
+		pDebugCube->bDontLight = true;
+		pDebugCube->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		pDebugCube->friendlyName = "DebugCube";
+		pDebugCube->bIsDebug = true;
+		pDebugCube->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
+		pDebugCube->setUniformScale(1.0f);
+		pDebugCube->bIsWireFrame = true;
+		vec_pObjectsToDraw.push_back(pDebugCube);
+	}
+
 //
 //	{	// This sphere is the tiny little debug sphere
 //		cMeshObject* pAxe = new cMeshObject();

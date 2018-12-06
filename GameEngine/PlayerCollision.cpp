@@ -31,7 +31,8 @@ void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 		float forwardSpeedThisFrame = forwardSpeed * deltaTime;
 
 		glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;
-		pPlayer->position += positionAdjustThisFrame;
+		//pPlayer->position += positionAdjustThisFrame;
+		pPlayer->velocity = vecForwardDirection_WorldSpace * forwardSpeed;
 	}
 
 	//camera.Position = glm::vec3(pPlayer->position.x, pPlayer->position.y, pPlayer->position.z + 1.0f);

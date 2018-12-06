@@ -330,10 +330,10 @@ int main(void)
 	std::vector<sNVPair> vecInitValues;
 
 	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
-	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0, 3, 0);
+	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0, 1.5, 0);
 	sNVPair minDistance;				minDistance.fValue = 2;
 	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 5;
-	sNVPair maxSpeed;					maxSpeed.fValue = 5;
+	sNVPair maxSpeed;					maxSpeed.fValue = 9;
 	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("mig");
 	sNVPair Time;						Time.fValue = 150;
 
@@ -503,17 +503,14 @@ int main(void)
 				cubeCorners[5].y += pCurrentAABB->getSideLength();
 
 
+				if (b_debugMode) {
+					cMeshObject* pDebugCube = findObjectByFriendlyName("DebugCube");
 
-				cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
-
-				pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
-				pCubeForBallsToBounceIn->bDontLight = true;
-				pCubeForBallsToBounceIn->position = pCurrentAABB->getCentre();
-				pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-				pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
-				pCubeForBallsToBounceIn->setUniformScale(pCurrentAABB->getSideLength() / 2);
-				pCubeForBallsToBounceIn->bIsWireFrame = true;
-				glm::mat4 iden = glm::mat4(1.0f);
+					pDebugCube->position = pCurrentAABB->getCentre();
+					pDebugCube->setUniformScale(pCurrentAABB->getSideLength() / 2);
+					glm::mat4 iden = glm::mat4(1.0f);
+					DrawObject(pDebugCube, iden, program);
+				}
 				//DrawObject(pCubeForBallsToBounceIn, iden, program);
 
 

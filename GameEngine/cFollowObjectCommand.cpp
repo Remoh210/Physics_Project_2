@@ -20,7 +20,7 @@ void cFollowObjectCommand::Initialize(std::vector<sNVPair> vecNVPairs)
 	this->targetObj = vecNVPairs[5].pMeshObj;
 	this->time = vecNVPairs[6].fValue;
 	this->b_Started = false;
-
+	camera.b_controlledByScript = true;
 	return;
 }
 
@@ -63,7 +63,7 @@ void cFollowObjectCommand::Update(double deltaTime)
 
 	this->theObj->position += deltaPosition;
 
-	if (theObj->friendlyName == "cameraObj")
+	if (theObj->friendlyName == "cameraObj" && camera.b_controlledByScript)
 	{
 		camera.Position = theObj->position;
 		camera.SetViewMatrix(glm::lookAt(camera.Position, this->targetObj->position, glm::vec3(0.0f, 1.0f, 0.0f)));

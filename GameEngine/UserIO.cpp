@@ -96,6 +96,17 @@ void key_callback( GLFWwindow* window,
 
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_3))
+	{
+		camera.b_controlledByScript = false;
+
+	}
+	if (glfwGetKey(window, GLFW_KEY_4))
+	{
+		camera.b_controlledByScript = true;
+
+	}
+
 
 
 
@@ -265,15 +276,7 @@ bool AreAllModifiersUp(GLFWwindow* window)
 	if ( IsCtrlDown(window) )	{ return false;	} 
 	if ( IsAltDown(window) )	{ return false; }
 	// Yup, they are all UP
-	cMeshObject* player = findObjectByFriendlyName("Ufo2UVb");
 
-	//player->bIsUpdatedByPhysics = true;
-	if (glfwGetKey(window, GLFW_KEY_UP)) { 
-		
-		player->accel += camera.Front * 1.01f;
-		//player->velocity = camera.Front * 200.0f;
-	}
-	else{ player->accel = -player->velocity * 1.0f; }
 //	camera.Position = player->position + glm::vec3(0.0f, 0.0f, 0.5f);
 	return true;
 }
@@ -289,6 +292,57 @@ void ProcessAsynKeys(GLFWwindow* window)
 	// 
 
 	float cameraSpeed = CAMERA_SPEED_SLOW;
+
+
+
+	if (b_landingMode == true)
+	{
+		cMeshObject* pPlayer = findObjectByFriendlyName("mig");
+
+		if (glfwGetKey(window, GLFW_KEY_W)) {
+
+			glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
+
+			glm::quat qMig29Rotation = pPlayer->getQOrientation();
+			glm::mat4 matQMig29rotation = glm::mat4(qMig29Rotation);
+
+			glm::vec4 vecForwardDirection_WorldSpace = matQMig29rotation * vecForwardDirection_ModelSpace;
+
+			vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
+
+
+			pPlayer->accel = vecForwardDirection_WorldSpace * 1.1f;
+			//pPlayer->position += positionAdjustThisFrame;
+		}
+		else if (glm::length(pPlayer->velocity) > 0.001f)
+		{
+			pPlayer->accel = -pPlayer->velocity * 0.5f;
+		}
+		//else { pPlayer->accel = -pPlayer->velocity * 0.5f; }
+
+		if (glfwGetKey(window, GLFW_KEY_A))
+		{
+			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.01f, 0.0f));
+		}
+		if (glfwGetKey(window, GLFW_KEY_D))
+		{
+			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.01f, 0.0f));
+		}
+		if (glfwGetKey(window, GLFW_KEY_E))
+		{
+			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f));
+
+		}
+		if (glfwGetKey(window, GLFW_KEY_Q))
+		{
+			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f));
+
+		}
+	}
+
+
+
+
 	if ( glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS  )
 	{
 		cameraSpeed = CAMERA_SPEED_FAST;
@@ -297,46 +351,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 	// If no keys are down, move the camera
 	if (AreAllModifiersUp(window))
 	{
-		if (b_landingMode == true) 
-		{
-			cMeshObject* pPlayer = findObjectByFriendlyName("mig");
-
-			if (glfwGetKey(window, GLFW_KEY_W)) {
-
-				glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
-
-				glm::quat qMig29Rotation = pPlayer->getQOrientation();
-				glm::mat4 matQMig29rotation = glm::mat4(qMig29Rotation);
-
-				glm::vec4 vecForwardDirection_WorldSpace = matQMig29rotation * vecForwardDirection_ModelSpace;
-
-				vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
-
-
-				pPlayer->accel = vecForwardDirection_WorldSpace * 1.1f;
-				//pPlayer->position += positionAdjustThisFrame;
-			}
-			else { pPlayer->accel = -pPlayer->velocity * 0.5f; }
-
-			if (glfwGetKey(window, GLFW_KEY_A))
-			{
-				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.01f, 0.0f));
-			}
-			if (glfwGetKey(window, GLFW_KEY_D))
-			{
-				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.01f, 0.0f));
-			}
-			if (glfwGetKey(window, GLFW_KEY_E))
-			{
-				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f));
-				
-			}
-			if (glfwGetKey(window, GLFW_KEY_Q))
-			{
-				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f));
-
-			}
-		}
+		
 
 	}//if(AreAllModifiersUp(window)
 
