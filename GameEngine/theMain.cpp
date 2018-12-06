@@ -317,8 +317,34 @@ int main(void)
 	//camera.b_controlledByScript = true;
 	//camera.SetViewMatrix(glm::lookAt(camera.Position, glm::vec3(285.0f, 245.0f, 825.0f), camera.WorldUp));
 	
+	camera.b_controlledByScript = true;
+	//COMMANDS
+	cFollowObjectCommand* newCommand = new cFollowObjectCommand();
 
+	cMeshObject* p_camObj = new cMeshObject();
+	p_camObj->friendlyName = "cameraObj";
+	p_camObj->position = camera.Position;
 
+	std::vector<sNVPair> vecInitValues;
+
+	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
+	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0, 3, 0);
+	sNVPair minDistance;				minDistance.fValue = 2;
+	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 5;
+	sNVPair maxSpeed;					maxSpeed.fValue = 5;
+	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("mig");
+	sNVPair Time;						Time.fValue = 150;
+
+	vecInitValues.push_back(ObjectToMove);
+	vecInitValues.push_back(IdealRelPos);
+	vecInitValues.push_back(minDistance);
+	vecInitValues.push_back(maxSpeedDistance);
+	vecInitValues.push_back(maxSpeed);
+	vecInitValues.push_back(TargetObject);
+	vecInitValues.push_back(Time);
+
+	newCommand->Initialize(vecInitValues);
+	sceneCommandGroup.vecCommands.push_back(newCommand);
 
 
 	//::p_LuaScripts = new cLuaBrain();

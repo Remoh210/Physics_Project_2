@@ -40,13 +40,13 @@ bool AreSpheresPenetrating( cMeshObject* pA, cMeshObject* pB );
 
 bool TestForCollision( cMeshObject* pA, cMeshObject* pB );
 
-void PlayerColTest(double deltaTime, GLuint shaderProgramID);
+void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID);
 // Called every frame
 void DoPhysicsUpdate( double fDeltaTime, 
 					  std::vector< cMeshObject* > &vec_pObjectsToDraw )
 {
 	float deltaTime = static_cast<float>(fDeltaTime);
-	//PlayerColTest(fDeltaTime, program);
+	PlayerCollisionTest(fDeltaTime, program);
 
 	// Make sure it's not tooooooo big
 	const float LARGEST_DELTATIME = 0.10f;			// 10 ms = 10 Hz
@@ -200,7 +200,7 @@ void DoPhysicsUpdate( double fDeltaTime,
 		}
 	}
 
-	PlayerColTest(fDeltaTime, program);
+	//PlayerColTest(fDeltaTime, program);
 
 	// Test for collisions
 	for ( std::vector< cMeshObject* >::iterator itObjectA = vec_pObjectsToDraw.begin();
