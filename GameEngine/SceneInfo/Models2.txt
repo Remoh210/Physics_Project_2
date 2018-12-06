@@ -1,9 +1,9 @@
 Friendly_Name mig
 Mesh_Name mig.ply
-Position 0 0 -25
+Position 170.607 -21.5198 51.3045
 DiffureRGB_Alpha  1 0.4 0.2 1
 SpecularRGB_Power 1 1 1 100
-QuatXYZW_rotation 0 0 0 1
+QuatXYZW_rotation -0.0992212 0.533702 0.0605147 -0.837
 Scale  1 1 1
 IsVisible  1
 IsUpdByPhys  1
@@ -11,15 +11,15 @@ IsWireFrame  0
 Textures:  0
 Friendly_Name earth
 Mesh_Name earth.ply
-Position 0 10 -25
+Position -2555 95 1030
 DiffureRGB_Alpha  0 0 0 1
 SpecularRGB_Power 1 1 1 100
-QuatXYZW_rotation 0 0 0 1
-Scale  100 100 100
+QuatXYZW_rotation 0 0.644219 0 0.764843
+Scale  169.399 169.399 169.399
 IsVisible  1
 IsUpdByPhys  0
 IsWireFrame  0
-Textures:  1
+Textures: 1
 Texture0_name earthTex.bmp
 Texture0_strength 1
 Friendly_Name Ufo2UVb
@@ -43,6 +43,6 @@ Scale  1 1 1
 IsVisible  1
 IsUpdByPhys  0
 IsWireFrame  0
-Textures:  1
+Textures: 1
 Texture0_name lavaTex.bmp
 Texture0_strength 1
