@@ -9,6 +9,19 @@ IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
 Textures:  0
+Friendly_Name earth
+Mesh_Name earth.ply
+Position 0 10 -25
+DiffureRGB_Alpha  0 0 0 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0 0 1
+Scale  100 100 100
+IsVisible  1
+IsUpdByPhys  0
+IsWireFrame  0
+Textures:  1
+Texture0_name earthTex.bmp
+Texture0_strength 1
 Friendly_Name Ufo2UVb
 Mesh_Name Ufo2UVb.ply
 Position -690 -60 1935
