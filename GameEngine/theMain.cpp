@@ -41,6 +41,8 @@ double deltaTime = 0;
 
 void DoPhysicsUpdate( double deltaTime, 
 					  std::vector< cMeshObject* > &vec_pObjectsToDraw );
+bool b_landingMode = false;
+bool b_debugMode = false;
 
 std::vector< cMeshObject* > vec_pObjectsToDraw;
 
@@ -646,7 +648,7 @@ int main(void)
 
 
 		//Upate Main CommandGroup of current scene
-		sceneCommandGroup.Update(deltaTime);
+		
 		
 
 
@@ -657,13 +659,14 @@ int main(void)
 
 		// update the "last time"
 		
-
+		
 		// The physics update loop
 		DoPhysicsUpdate( deltaTime, vec_pObjectsToDraw );
+		sceneCommandGroup.Update(deltaTime);
 
-		::p_LuaScripts->UpdateCG(deltaTime);
+		
 		//::p_LuaScripts->Update(deltaTime);
-
+		//::p_LuaScripts->UpdateCG(deltaTime);
 		for (std::vector<sLight*>::iterator it = LightManager->vecLights.begin(); it != LightManager->vecLights.end(); ++it)
 		{
 

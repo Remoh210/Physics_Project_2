@@ -82,10 +82,17 @@ void key_callback( GLFWwindow* window,
 	}
 
 
-	if (glfwGetKey(window, GLFW_KEY_ENTER))
+	if (glfwGetKey(window, GLFW_KEY_1))
 	{
-		
+		b_debugMode = true;
+		swithDebugMode(b_debugMode, vec_pObjectsToDraw);
 
+	}
+
+	if (glfwGetKey(window, GLFW_KEY_2))
+	{
+		b_debugMode = false;
+		swithDebugMode(b_debugMode, vec_pObjectsToDraw);
 
 	}
 
@@ -93,10 +100,14 @@ void key_callback( GLFWwindow* window,
 
 
 
-	if (glfwGetKey(window, GLFW_KEY_L))
+	if (key == GLFW_KEY_L && action == GLFW_PRESS)
 	{
-		loadModels("Models2.txt", vec_pObjectsToDraw);
-		loadLights("lights.txt", LightManager->vecLights);
+			b_landingMode = true;
+	}
+
+	if (key == GLFW_KEY_F && action == GLFW_PRESS)
+	{
+		b_landingMode = false;
 	}
 
 	if (glfwGetKey(window, GLFW_KEY_R))
@@ -284,24 +295,48 @@ void ProcessAsynKeys(GLFWwindow* window)
 	}
 	
 	// If no keys are down, move the camera
-	if ( AreAllModifiersUp(window) )
+	if (AreAllModifiersUp(window))
 	{
-		// Note: The "== GLFW_PRESS" isn't really needed as it's actually "1" 
-		// (so the if() treats the "1" as true...)
+		if (b_landingMode == true) 
+		{
+			cMeshObject* pPlayer = findObjectByFriendlyName("mig");
 
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			camera.ProcessKeyboard(FORWARD, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			camera.ProcessKeyboard(BACKWARD, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			camera.ProcessKeyboard(LEFT, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			camera.ProcessKeyboard(RIGHT, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-			camera.ProcessKeyboard(UP, deltaTime);
-		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-			camera.ProcessKeyboard(DOWN, deltaTime);
+			if (glfwGetKey(window, GLFW_KEY_W)) {
 
+				glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, /**/1.0f/**/, 1.0f);
+
+				glm::quat qMig29Rotation = pPlayer->getQOrientation();
+				glm::mat4 matQMig29rotation = glm::mat4(qMig29Rotation);
+
+				glm::vec4 vecForwardDirection_WorldSpace = matQMig29rotation * vecForwardDirection_ModelSpace;
+
+				vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
+
+
+				pPlayer->accel = vecForwardDirection_WorldSpace * 1.1f;
+				//pPlayer->position += positionAdjustThisFrame;
+			}
+			else { pPlayer->accel = -pPlayer->velocity * 0.5f; }
+
+			if (glfwGetKey(window, GLFW_KEY_A))
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.01f, 0.0f));
+			}
+			if (glfwGetKey(window, GLFW_KEY_D))
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.01f, 0.0f));
+			}
+			if (glfwGetKey(window, GLFW_KEY_E))
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f));
+				
+			}
+			if (glfwGetKey(window, GLFW_KEY_Q))
+			{
+				pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f));
+
+			}
+		}
 
 	}//if(AreAllModifiersUp(window)
 
@@ -378,6 +413,23 @@ void ProcessAsynKeys(GLFWwindow* window)
 		if ( glfwGetKey( window, GLFW_KEY_UP)   )	{ LightManager->vecLights.at(lightIndex)->atten.z *= 1.05f; }
 		
 
+	}
+
+
+	if (IsShiftDown(window))
+	{
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			camera.ProcessKeyboard(FORWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			camera.ProcessKeyboard(BACKWARD, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			camera.ProcessKeyboard(LEFT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			camera.ProcessKeyboard(RIGHT, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+			camera.ProcessKeyboard(UP, deltaTime);
+		if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+			camera.ProcessKeyboard(DOWN, deltaTime);
 	}
 
 
@@ -580,4 +632,29 @@ void commandsInterface()
 	//pMoveToCG->vecCommands.push_back(pMoveTo);
 
 //	sceneCommandGroup.vecCommandGroups.push_back(pMoveToCG);
+}
+
+
+void swithDebugMode(bool debug, std::vector<cMeshObject*> models) 
+{
+	if(debug)
+	{
+		for (int i = 0; i < models.size(); i++)
+		{
+			if (models[i]->bIsDebug) 
+			{
+				models[i]->bIsVisible = true;
+			}
+		}
+	}
+	else 
+	{
+		for (int i = 0; i < models.size(); i++)
+		{
+			if (models[i]->bIsDebug)
+			{
+				models[i]->bIsVisible = false;
+			}
+		}
+	}
 }

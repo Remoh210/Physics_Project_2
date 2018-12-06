@@ -59,6 +59,8 @@ extern std::vector< cMeshObject* > vec_pObjectsToDraw;
 // search for them using the findObjectBy...() 
 // functions.
 extern cMeshObject* g_pRogerRabbit;
+extern bool b_landingMode;
+extern bool b_debugMode;
 // 
 
 // Signature for the ply loader function
@@ -83,10 +85,12 @@ void saveModelInfo(std::string filename, std::vector<cMeshObject*> models);
 void loadModels(std::string filename, std::vector<cMeshObject*> models);
 
 void loadLights(std::string filename, std::vector<sLight*> lights);
+void swithDebugMode(bool debug, std::vector<cMeshObject*> models);
 
 void DrawObject( cMeshObject* pCurrentMesh,
 				 glm::mat4x4 &matModel, 
 				 GLuint shaderProgramID );
+
 
 
 // *****************************************************************

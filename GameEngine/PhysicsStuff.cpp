@@ -171,7 +171,37 @@ void DoPhysicsUpdate( double fDeltaTime,
 		}//if ( pCurMesh
 	}//for ( std::vector< cMeshObject*
 
-	if (vec_cur_AABB_tris.size() > 0) 
+	//if (vec_cur_AABB_tris.size() > 0) 
+	//{
+	//	// Test for collisions
+	//	for (std::vector< cMeshObject* >::iterator itObjectA = vec_pObjectsToDraw.begin();
+	//		itObjectA != vec_pObjectsToDraw.end(); itObjectA++)
+	//	{
+	//		cMeshObject* pCurObj = *itObjectA;
+
+	//		if (pCurObj->bIsUpdatedByPhysics) {
+	//			for (std::vector<cAABB::sAABB_Triangle>::iterator itTri = vec_cur_AABB_tris.begin(); itTri != vec_cur_AABB_tris.end(); itTri++)
+	//			{
+	//				cAABB::sAABB_Triangle CurTri = *itTri;
+	//				glm::vec3 closestPointToTri = ClosestPtPointTriangle(pCurObj->position,
+	//					CurTri.verts[0], CurTri.verts[1], CurTri.verts[2]);
+
+	//				// is this point LESS THAN the radius of the sphere? 
+	//				if (glm::distance(closestPointToTri, pCurObj->position) < 1.0f)
+	//				{
+	//					pCurObj->velocity = glm::vec3(0.0f);
+	//					std::cout << " collision " << std::endl;
+	//				}
+
+	//			}
+	//		}
+	//		
+
+	//	}
+	//}
+
+
+	if (vec_cur_AABB_tris.size() > 0)
 	{
 		// Test for collisions
 		for (std::vector< cMeshObject* >::iterator itObjectA = vec_pObjectsToDraw.begin();
@@ -180,22 +210,31 @@ void DoPhysicsUpdate( double fDeltaTime,
 			cMeshObject* pCurObj = *itObjectA;
 
 			if (pCurObj->bIsUpdatedByPhysics) {
-				for (std::vector<cAABB::sAABB_Triangle>::iterator itTri = vec_cur_AABB_tris.begin(); itTri != vec_cur_AABB_tris.end(); itTri++)
+
+				if (pCurObj->shapeType == cMeshObject::SPHERE)
 				{
-					cAABB::sAABB_Triangle CurTri = *itTri;
-					glm::vec3 closestPointToTri = ClosestPtPointTriangle(pCurObj->position,
+					sSphere* pSphereA = (sSphere*)(pCurObj->pTheShape);
+					
+					for (std::vector<cAABB::sAABB_Triangle>::iterator itTri = vec_cur_AABB_tris.begin(); itTri != vec_cur_AABB_tris.end(); itTri++)
+					{
+
+						cAABB::sAABB_Triangle CurTri = *itTri;
+						glm::vec3 closestPointToTri = ClosestPtPointTriangle(pCurObj->position,
 						CurTri.verts[0], CurTri.verts[1], CurTri.verts[2]);
 
-					// is this point LESS THAN the radius of the sphere? 
-					if (glm::distance(closestPointToTri, pCurObj->position) < 1.0f)
-					{
-						pCurObj->velocity = glm::vec3(0.0f);
-						std::cout << " collision " << std::endl;
-					}
 
+						if (glm::distance(closestPointToTri, pCurObj->position) <= pSphereA->radius)
+						{
+							//pCurObj->velocity = glm::vec3(0.0f);
+							if (pCurObj->friendlyName == "DebugSphereLeft") { std::cout << " collision Left Wing" << std::endl; }
+							if (pCurObj->friendlyName == "DebugSphereRight") { std::cout << " collision Right Wing " << std::endl; }
+							if (pCurObj->friendlyName == "DebugSphereNose") { std::cout << " collision Nose " << std::endl; }
+						}
+
+					}
 				}
 			}
-			
+
 
 		}
 	}
@@ -241,6 +280,7 @@ void DoPhysicsUpdate( double fDeltaTime,
 						}
 						else if ( (pObjectA->shapeType == cMeshObject::SPHERE) && (pObjectB->shapeType == cMeshObject::TRIANGLE) )
 						{
+							if (pObjectA->friendlyName == "DebugSphereLeft") { std::cout << "left" << std::endl; }
 							// If it's a Sphere-Triange, make the intersection lines magenta
 							::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
 														 glm::vec3( 1.0f, 0.0f, 1.0f ), 

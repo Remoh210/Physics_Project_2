@@ -374,6 +374,68 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 	//pTerrain->nonUniformScale = glm::vec3(0.1f,0.1f,0.1f);
 	vec_pObjectsToDraw.push_back(pPlayerSphere);
 	}
+
+
+
+	{	// This sphere is the tiny little debug sphere
+		cMeshObject* pSphereLeft = new cMeshObject();
+		pSphereLeft->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pSphereLeft->friendlyName = "DebugSphereLeft";
+		pSphereLeft->meshName = "Sphere_320.ply";
+		pSphereLeft->bIsWireFrame = true;
+		pSphereLeft->bDontLight = true;
+		pSphereLeft->bIsVisible = false;
+		float scale = 0.25f;
+		pSphereLeft->nonUniformScale = glm::vec3(scale, scale, scale);
+		pSphereLeft->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		pSphereLeft->bIsUpdatedByPhysics = true;
+		pSphereLeft->bIsDebug = true;
+		pSphereLeft->pDebugRenderer = ::g_pDebugRenderer;
+		pSphereLeft->pTheShape = new sSphere(scale);
+		pSphereLeft->shapeType = cMeshObject::SPHERE;
+		vec_pObjectsToDraw.push_back(pSphereLeft);
+		
+	}
+
+	{	// This sphere is the tiny little debug sphere
+		cMeshObject* pSphereRight = new cMeshObject();
+		pSphereRight->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pSphereRight->friendlyName = "DebugSphereRight";
+		pSphereRight->meshName = "Sphere_320.ply";
+		pSphereRight->bIsWireFrame = true;
+		pSphereRight->bIsVisible = false;
+		pSphereRight->bDontLight = true;
+		float scale = 0.25f;
+		pSphereRight->nonUniformScale = glm::vec3(scale, scale, scale);
+		pSphereRight->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		pSphereRight->bIsUpdatedByPhysics = true;
+		pSphereRight->bIsDebug = true;
+		pSphereRight->pDebugRenderer = ::g_pDebugRenderer;
+		pSphereRight->pTheShape = new sSphere(scale);
+		pSphereRight->shapeType = cMeshObject::SPHERE;
+		vec_pObjectsToDraw.push_back(pSphereRight);
+
+	}
+
+	{	// This sphere is the tiny little debug sphere
+		cMeshObject* pSphereNose = new cMeshObject();
+		pSphereNose->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pSphereNose->friendlyName = "DebugSphereNose";
+		pSphereNose->meshName = "Sphere_320.ply";
+		pSphereNose->bIsWireFrame = true;
+		pSphereNose->bDontLight = true;
+		float scale = 0.25f;
+		pSphereNose->nonUniformScale = glm::vec3(scale, scale, scale);
+		pSphereNose->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		pSphereNose->bIsUpdatedByPhysics = true;
+		pSphereNose->bIsDebug = true;
+		pSphereNose->pDebugRenderer = ::g_pDebugRenderer;
+		pSphereNose->pTheShape = new sSphere(scale);
+		pSphereNose->shapeType = cMeshObject::SPHERE;
+		vec_pObjectsToDraw.push_back(pSphereNose);
+
+	}
+
 //
 //	{	// This sphere is the tiny little debug sphere
 //		cMeshObject* pAxe = new cMeshObject();
