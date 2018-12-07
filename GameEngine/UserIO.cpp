@@ -47,6 +47,10 @@ void key_callback( GLFWwindow* window,
 {
 	
 
+	if (b_debugMode) { findObjectByFriendlyName("xwing")->bIsVisible = false; }
+	else { findObjectByFriendlyName("xwing")->bIsVisible = true; }
+
+
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		
@@ -221,7 +225,6 @@ void key_callback( GLFWwindow* window,
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 	{
 
-
 		//LightManager->vecLights.at(lightIndex)->AtenSphere = false;
 	}
 
@@ -305,6 +308,21 @@ void ProcessAsynKeys(GLFWwindow* window)
 	float cameraSpeed = CAMERA_SPEED_SLOW;
 
 	cMeshObject* pPlayer = findObjectByFriendlyName("xwing");
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE)) 
+	{ 
+		if (xwingSpeed < 50) {
+			xwingSpeed += 0.2f;
+		}
+		
+	}
+	else { 
+		if (xwingSpeed > 15) {
+			xwingSpeed -= 0.2f;
+		}
+	}
+
+
 
 
 	if(camera.b_controlledByScript){
@@ -476,12 +494,12 @@ void ProcessAsynKeys(GLFWwindow* window)
 	//OBJECT CONTROL***********************************************************
 	if ( IsAltDown(window) )
 	{	//Object Postiton
-		if ( glfwGetKey( window, GLFW_KEY_W	) )	{ vec_pObjectsToDraw.at(index)->position.z -= cameraSpeed * 0.01; }
-		if ( glfwGetKey( window, GLFW_KEY_S ) )	{ vec_pObjectsToDraw.at(index)->position.z += cameraSpeed * 0.01; }
-		if ( glfwGetKey( window, GLFW_KEY_A ) )	{ vec_pObjectsToDraw.at(index)->position.x -= cameraSpeed * 0.01; }
-		if ( glfwGetKey( window, GLFW_KEY_D ) ) { vec_pObjectsToDraw.at(index)->position.x += cameraSpeed * 0.01; }
-		if ( glfwGetKey( window, GLFW_KEY_Q ) )	{ vec_pObjectsToDraw.at(index)->position.y -= cameraSpeed * 0.01; }
-		if ( glfwGetKey( window, GLFW_KEY_E ) )	{ vec_pObjectsToDraw.at(index)->position.y += cameraSpeed * 0.01; }
+		if ( glfwGetKey( window, GLFW_KEY_W	) )	{ vec_pObjectsToDraw.at(index)->position.z -= cameraSpeed * 1.01; }
+		if ( glfwGetKey( window, GLFW_KEY_S ) )	{ vec_pObjectsToDraw.at(index)->position.z += cameraSpeed * 1.01; }
+		if ( glfwGetKey( window, GLFW_KEY_A ) )	{ vec_pObjectsToDraw.at(index)->position.x -= cameraSpeed * 1.01; }
+		if ( glfwGetKey( window, GLFW_KEY_D ) ) { vec_pObjectsToDraw.at(index)->position.x += cameraSpeed * 1.01; }
+		if ( glfwGetKey( window, GLFW_KEY_Q ) )	{ vec_pObjectsToDraw.at(index)->position.y -= cameraSpeed * 1.01; }
+		if ( glfwGetKey( window, GLFW_KEY_E ) )	{ vec_pObjectsToDraw.at(index)->position.y += cameraSpeed * 1.01; }
 
 		////Object Rotation
 		if (glfwGetKey(window, GLFW_KEY_RIGHT)) { vec_pObjectsToDraw.at(index)->adjMeshOrientationEulerAngles(0.0f, 0.1f, 0.0f, false); }

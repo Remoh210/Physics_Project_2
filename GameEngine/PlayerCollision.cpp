@@ -27,7 +27,7 @@ void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 
 		vecForwardDirection_WorldSpace = glm::normalize(vecForwardDirection_WorldSpace);
 
-		float forwardSpeed = 10.0f;
+		float forwardSpeed = xwingSpeed;
 		float forwardSpeedThisFrame = forwardSpeed * deltaTime;
 
 		glm::vec3 positionAdjustThisFrame = vecForwardDirection_WorldSpace * forwardSpeedThisFrame;

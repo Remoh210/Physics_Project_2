@@ -38,7 +38,7 @@ std::vector<cAABB::sAABB_Triangle> vec_cur_AABB_tris;
 void UpdateWindowTitle(void);
 double currentTime = 0;
 double deltaTime = 0;
-
+float xwingSpeed = 15;
 void DoPhysicsUpdate( double deltaTime, 
 					  std::vector< cMeshObject* > &vec_pObjectsToDraw );
 bool b_landingMode = false;
@@ -455,8 +455,9 @@ int main(void)
 			pCubeForBallsToBounceIn->setUniformScale(sideLength / 2);
 			pCubeForBallsToBounceIn->bIsWireFrame = true;
 			glm::mat4 iden = glm::mat4(1.0f);
-			DrawObject(pCubeForBallsToBounceIn, iden, program);
-
+			if (b_debugMode) {
+				DrawObject(pCubeForBallsToBounceIn, iden, program);
+			}
 			unsigned long long ID_of_AABB_We_are_in = cAABB::generateID(pTheBunny->position, sideLength);
 
 			// Is there a box here? 

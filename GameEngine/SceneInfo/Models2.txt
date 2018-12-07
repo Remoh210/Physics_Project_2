@@ -1,14 +1,16 @@
 Friendly_Name xwing
-Mesh_Name xwing.ply
-Position 117.02 -15.6404 79.5571
-DiffureRGB_Alpha  1 0.4 0.2 1
+Mesh_Name x-wing.ply
+Position 117.02 0.0 79.5571
+DiffureRGB_Alpha  0 0 0 1
 SpecularRGB_Power 1 1 1 100
 QuatXYZW_rotation 0.0417631 -0.527917 -0.0967639 0.841343
 Scale  1 1 1
 IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
-Textures:  0
+Textures: 1
+Texture0_name x-wingTex.bmp
+Texture0_strength 1
 Friendly_Name earth
 Mesh_Name earth.ply
 Position -2555 495 1030
@@ -46,3 +48,14 @@ IsWireFrame  0
 Textures: 1
 Texture0_name marsTex.bmp
 Texture0_strength 1
+friendly_Name destroyer
+Mesh_Name destroyer.ply
+Position -3513.25 692.349 -1088.3
+DiffureRGB_Alpha  1 0.8 0.5 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0.0998336 0 0.995005
+Scale  15.4 15.4 15.4
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0
