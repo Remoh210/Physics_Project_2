@@ -276,6 +276,9 @@ int main(void)
 		LightManager->LoadUniformLocations(program);
 	}
 
+
+
+
 	{
 		sLight* ChestLight = new sLight();
 		ChestLight->position = glm::vec4(-675.0f, 40.0f, 520.0f, 1.0f);
@@ -301,6 +304,27 @@ int main(void)
 		ChestLight->param2.x = 0.0f;
 		ChestLight->lightName = "QuestLight";
 		LightManager->vecLights.push_back(ChestLight);
+		LightManager->LoadUniformLocations(program);
+	}
+
+
+	{
+		sLight* xwinglight = new sLight();
+		xwinglight->position = glm::vec4(-675.0f, 40.0f, 520.0f, 1.0f);
+		xwinglight->atten.x = 0.0f;	// 			float constAtten = 0.0f;
+		xwinglight->atten.y = 0.0001f;	//			float linearAtten = 0.01f;
+		xwinglight->atten.z = 0.000021f;	//			float quadAtten = 0.001f;
+		xwinglight->diffuse = glm::vec4(16 / 250.0f, 10 / 250.0f, 200 / 250.0f, 0.0f);
+		xwinglight->param2.x = 1.0f;
+		xwinglight->SetLightType(sLight::SPOT_LIGHT);
+		xwinglight->SetSpotConeAngles(5.0f, 15.0f);
+		//	pTheOneLight->SetSpotConeAngles( 15.0f, 45.0f );
+			// Direction is RELATIVE to the LIGHT (for spots)
+			// Straight down... 
+		
+		//pTheForthLight->AtenSphere - false;
+		xwinglight->lightName = "xwinglight";
+		LightManager->vecLights.push_back(xwinglight);
 		LightManager->LoadUniformLocations(program);
 	}
 
@@ -335,7 +359,7 @@ int main(void)
 	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 15;
 	sNVPair maxSpeed;					maxSpeed.fValue = 50;
 	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("xwing");
-	sNVPair Time;						Time.fValue = 150;
+	sNVPair Time;						Time.fValue = 0;
 
 	vecInitValues.push_back(ObjectToMove);
 	vecInitValues.push_back(IdealRelPos);

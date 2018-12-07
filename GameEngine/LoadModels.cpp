@@ -368,6 +368,7 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 	//pPlayerSphere->accel = glm::vec3(0.0f, -5.0f, 0.0f);
 	pPlayerSphere->bIsUpdatedByPhysics = true;
 	pPlayerSphere->bIsDebug = true;
+	pPlayerSphere->bIsVisible = false;
 
 	pPlayerSphere->pDebugRenderer = ::g_pDebugRenderer;
 
@@ -424,6 +425,7 @@ void LoadModelsIntoScene( std::vector<cMeshObject*> &vec_pObjectsToDraw )
 		pSphereNose->meshName = "Sphere_320.ply";
 		pSphereNose->bIsWireFrame = true;
 		pSphereNose->bDontLight = true;
+		pSphereNose->bIsVisible = false;
 		float scale = 1.0f;
 		pSphereNose->nonUniformScale = glm::vec3(scale, scale, scale);
 		pSphereNose->position = glm::vec3(0.0f, 0.0f, 0.0f);

@@ -74,7 +74,8 @@ void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 	pDebugSphereLeft->position = leftWingTipContactPoint_WorldSpace;
 	//Right wing point
 	pDebugSphereRight->position = rightWingTipContactPoint_WorldSpace;
-
+	LightManager->vecLights.at(7)->position = glm::vec4(noseContactPoint_WorldSpace);
+	LightManager->vecLights.at(7)->SetRelativeDirection(glm::normalize(pPlayer->velocity));
 
 	return;
 }

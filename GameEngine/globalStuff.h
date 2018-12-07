@@ -45,7 +45,7 @@ extern double deltaTime;
 //Global screen size
 extern const unsigned int SCR_WIDTH;
 extern const unsigned int SCR_HEIGHT;
-
+extern cLightManager* LightManager;
 // NOTE: These are JUST FOR NOW!!!
 extern glm::vec3 g_lightPos;	// = glm::vec3( 4.0f, 4.0f, 0.0f );
 extern float g_lightBrightness;	// = 1.0f;

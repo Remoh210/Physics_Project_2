@@ -10,7 +10,7 @@ int index = 0;
 // This has all the keyboard, mouse, and controller stuff
 
 extern sLight* pTheOneLight;	//  = NULL;
-extern cLightManager* LightManager;
+
 int lightIndex = 0;
 bool firstMouse = true;
 
@@ -65,6 +65,9 @@ void key_callback( GLFWwindow* window,
 	//Reset Scene
 	if (key == GLFW_KEY_G && action == GLFW_PRESS)
 	{
+		b_debugMode = false;
+		b_landingMode = false;
+		swithDebugMode(b_debugMode, vec_pObjectsToDraw);
 		loadModels("Models2.txt", vec_pObjectsToDraw);
 		loadLights("lights2.txt", LightManager->vecLights);
 		camera.b_controlledByScript = false;
@@ -88,6 +91,7 @@ void key_callback( GLFWwindow* window,
 	if (glfwGetKey(window, GLFW_KEY_1))
 	{
 		b_debugMode = true;
+		findObjectByFriendlyName("xwing")->velocity = glm::vec3(0.0f);
 		swithDebugMode(b_debugMode, vec_pObjectsToDraw);
 
 	}
@@ -172,13 +176,11 @@ void key_callback( GLFWwindow* window,
 
 	}
 
-	if (key == GLFW_KEY_8 && action == GLFW_PRESS)
+	if (key == GLFW_KEY_BACKSPACE && action == GLFW_PRESS)
 	{
 
 
-		//::p_LuaScripts->Update(deltaTime);
-
-		//::p_LuaScripts->UpdateCG(deltaTime);
+		saveLightInfo("lights2.txt", LightManager->vecLights);
 		
 	}
 	
@@ -193,6 +195,9 @@ void key_callback( GLFWwindow* window,
 	{
 		LightManager->vecLights.at(lightIndex)->param2.x = 0.0f;
 	}
+
+
+
 
 
 
@@ -219,6 +224,9 @@ void key_callback( GLFWwindow* window,
 
 		//LightManager->vecLights.at(lightIndex)->AtenSphere = false;
 	}
+
+
+	
 
 
 	return;
@@ -357,7 +365,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 
 	}
 
-
+	
 
 	if ( glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS  )
 	{
