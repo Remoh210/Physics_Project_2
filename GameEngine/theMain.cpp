@@ -52,8 +52,8 @@ float g_lightBrightness = 400000.0f;
 
 unsigned int numberOfObjectsToDraw = 0;
 
-const unsigned int SCR_WIDTH = 1000;
-const unsigned int SCR_HEIGHT = 800;
+const unsigned int SCR_WIDTH = 1920;
+const unsigned int SCR_HEIGHT = 1200;
 
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -106,7 +106,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light", NULL, NULL);
+	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light", glfwGetPrimaryMonitor(), NULL);
 	if (!window)
 	{
 		glfwTerminate();
