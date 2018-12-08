@@ -11,10 +11,10 @@ typedef glm::vec3 Vector;
 
 const float GROUND_PLANE_Y = -3.0f;			// Lowest the objects can go
 
-const float LIMIT_POS_X =  100.0f;			// Lowest the objects can go
-const float LIMIT_NEG_X = -100.0f;			// Lowest the objects can go
-const float LIMIT_POS_Z =  100.0f;			// Lowest the objects can go
-const float LIMIT_NEG_Z = -100.0f;			// Lowest the objects can go
+const float LIMIT_POS_X =  1000.0f;			// Lowest the objects can go
+const float LIMIT_NEG_X = -1000.0f;			// Lowest the objects can go
+const float LIMIT_POS_Z =  1000.0f;			// Lowest the objects can go
+const float LIMIT_NEG_Z = -1000.0f;			// Lowest the objects can go
 Point ClosestPtPointTriangle(Point p, Point a, Point b, Point c);
 
 
@@ -84,6 +84,9 @@ void DoPhysicsUpdate( double fDeltaTime,
 				//}
 
 
+
+			
+
 			// The object can't go any lower than the "ground".
 			// The "ground" is a plane along the x-z axis.
 			// So we can decide a "height" along the y....
@@ -118,24 +121,13 @@ void DoPhysicsUpdate( double fDeltaTime,
 //			// Sphere - Plane test... 
 //			// Is this sphere PENETRATED this plane
 //			// Is is INSIDE or OUTSIDE the plane?
-//			if ( pCurMesh->position.x >= LIMIT_POS_X )
-//			{
-//				pCurMesh->velocity.x = -fabs(pCurMesh->velocity.x) ;
-//			}
-////			if ( pCurMesh->position.x <= LIMIT_NEG_X )
-//			if ( pCurMesh->position.x <= LIMIT_NEG_X )
-//			{
-//				pCurMesh->velocity.x = fabs(pCurMesh->velocity.x) ;
-//			}
-//			if ( pCurMesh->position.z >= LIMIT_POS_Z )
-//			{
-//				pCurMesh->velocity.z = -fabs(pCurMesh->velocity.z) ;
-//			}
-//			if ( pCurMesh->position.z <= LIMIT_NEG_Z )
-//			{
-//				pCurMesh->velocity.z = fabs(pCurMesh->velocity.z) ;
-//			}
 
+				//if (pCurMesh->friendlyName == "beam") {
+				//	if (pCurMesh->position.x >= LIMIT_POS_X || pCurMesh->position.x <= LIMIT_NEG_X || pCurMesh->position.z >= LIMIT_POS_Z || pCurMesh->position.z <= LIMIT_NEG_Z)
+				//	{
+				//		pCurMesh->bIsVisible = false;
+				//	}
+				//}
 
 		//	// Check if I'm contacting another sphere..
 		//	for ( std::vector< cMeshObject* >::iterator itMesh = vec_pObjectsToDraw.begin();
@@ -293,17 +285,17 @@ void DoPhysicsUpdate( double fDeltaTime,
 						if ( (pObjectA->shapeType == cMeshObject::SPHERE) && (pObjectB->shapeType == cMeshObject::SPHERE) )
 						{
 							// If it's a Sphere-Sphere, make the intersection lines yellow
-							::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
-														 glm::vec3( 1.0f, 1.0f, 0.0f ), 
-														 2.0f /*show for 2 seconds*/ );
+							//::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
+							//							 glm::vec3( 1.0f, 1.0f, 0.0f ), 
+							//							 2.0f /*show for 2 seconds*/ );
 						}
 						else if ( (pObjectA->shapeType == cMeshObject::SPHERE) && (pObjectB->shapeType == cMeshObject::TRIANGLE) )
 						{
-							if (pObjectA->friendlyName == "DebugSphereLeft") { std::cout << "left" << std::endl; }
+							//if (pObjectA->friendlyName == "DebugSphereLeft") { std::cout << "left" << std::endl; }
 							// If it's a Sphere-Triange, make the intersection lines magenta
-							::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
-														 glm::vec3( 1.0f, 0.0f, 1.0f ), 
-														 2.0f /*show for 2 seconds*/ );
+							//::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
+							//							 glm::vec3( 1.0f, 0.0f, 1.0f ), 
+							//							 2.0f /*show for 2 seconds*/ );
 						}
 					}//if(TestForCollision(...
 				}

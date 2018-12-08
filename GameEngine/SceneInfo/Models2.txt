@@ -59,3 +59,14 @@ IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
 Textures:  0
+friendly_Name beam
+Mesh_Name beam.ply
+Position 0 0 0
+DiffureRGB_Alpha  1 0.8 0.5 1
+SpecularRGB_Power 1 1 1 100
+QuatXYZW_rotation 0 0.0998336 0 0.995005
+Scale  15.4 15.4 15.4
+IsVisible  1
+IsUpdByPhys  1
+IsWireFrame  0
+Textures:  0

@@ -4,19 +4,18 @@ cMeshObject::cMeshObject()
 {
 	this->position = glm::vec3(0.0f);
 	this->nonUniformScale = glm::vec3(1.0f);
-
-	//	this->preRotation = glm::vec3(0.0f);
-	//	this->postRotation = glm::vec3(0.0f);
 	this->setMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	//	this->m_meshQOrientation = glm::quat( glm::vec3(0.0f,0.0f,0.0f));
+	//for bullets, beam, etc;
+	this->initPos = glm::vec3(0.0f);
+	this->bIsProjectile = false;
 
-		// 
+
 	this->bIsDebug = false;
 	this->bIsVisible = true;
 	this->bIsWireFrame = false;
 
-	// Set unique ID
+
 	this->m_uniqueID = cMeshObject::m_NextID;
 	// Increment
 	cMeshObject::m_NextID++;	// 32 bit - 4 billion

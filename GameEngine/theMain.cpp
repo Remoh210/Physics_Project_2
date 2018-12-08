@@ -52,8 +52,8 @@ float g_lightBrightness = 400000.0f;
 
 unsigned int numberOfObjectsToDraw = 0;
 
-const unsigned int SCR_WIDTH = 1920;
-const unsigned int SCR_HEIGHT = 1200;
+const unsigned int SCR_WIDTH = 1200;//4096 × 3072
+const unsigned int SCR_HEIGHT = 768;
 
 Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -106,7 +106,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light", glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Light", NULL/*glfwGetPrimaryMonitor()*/, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -214,15 +214,15 @@ int main(void)
 	//vec_sorted_drawObj = vec_pObjectsToDraw;
 
 			// Draw all the objects in the "scene"
-	for (unsigned int objIndex = 0;
-		objIndex != (unsigned int)vec_pObjectsToDraw.size();
-		objIndex++)
-	{
-		cMeshObject* pCurrentMesh = vec_pObjectsToDraw[objIndex];
-		if (pCurrentMesh->materialDiffuse.a < 1.0f) { vec_transObj.push_back(pCurrentMesh); }
-		else { vec_non_transObj.push_back(pCurrentMesh); }
+	//for (unsigned int objIndex = 0;
+	//	objIndex != (unsigned int)vec_pObjectsToDraw.size();
+	//	objIndex++)
+	//{
+	//	cMeshObject* pCurrentMesh = vec_pObjectsToDraw[objIndex];
+	//	if (pCurrentMesh->materialDiffuse.a < 1.0f) { vec_transObj.push_back(pCurrentMesh); }
+	//	else { vec_non_transObj.push_back(pCurrentMesh); }
 
-	}//for ( unsigned int objIndex = 0; 
+	//}//for ( unsigned int objIndex = 0; 
 
 
 	LoadTerrainAABB();
@@ -355,9 +355,9 @@ int main(void)
 
 	sNVPair ObjectToMove;				ObjectToMove.pMeshObj = p_camObj;
 	sNVPair IdealRelPos;				IdealRelPos.v3Value = glm::vec3(0.0f, 1.0f, 0.0f);
-	sNVPair minDistance;				minDistance.fValue = 10;
-	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 15;
-	sNVPair maxSpeed;					maxSpeed.fValue = 50;
+	sNVPair minDistance;				minDistance.fValue = 8;
+	sNVPair maxSpeedDistance;			maxSpeedDistance.fValue = 30;
+	sNVPair maxSpeed;					maxSpeed.fValue = 100;
 	sNVPair TargetObject;				TargetObject.pMeshObj = findObjectByFriendlyName("xwing");
 	sNVPair Time;						Time.fValue = 0;
 
@@ -436,54 +436,42 @@ int main(void)
 
 
 
-		{// START OF: AABB debug stuff
-//HACK: Draw Debug AABBs...
+		{
 
-// Get that from FindObjectByID()
-			cMeshObject* pTheBunny = findObjectByFriendlyName("xwing");
+			cMeshObject* pPlayer = findObjectByFriendlyName("xwing");
 			cMeshObject* pter = findObjectByFriendlyName("terrain");
-			// Highlight the AABB that the rabbit is in (Or the CENTRE of the rabbit, anyway)
 
 			float sideLength = 20.0f;
 			cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
 
 			pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
 			pCubeForBallsToBounceIn->bDontLight = true;
-			pCubeForBallsToBounceIn->position = pTheBunny->position;
+			pCubeForBallsToBounceIn->position = pPlayer->position;
 			pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-			pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
+			pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		
 			pCubeForBallsToBounceIn->setUniformScale(sideLength / 2);
 			pCubeForBallsToBounceIn->bIsWireFrame = true;
 			glm::mat4 iden = glm::mat4(1.0f);
 			if (b_debugMode) {
 				DrawObject(pCubeForBallsToBounceIn, iden, program);
 			}
-			unsigned long long ID_of_AABB_We_are_in = cAABB::generateID(pTheBunny->position, sideLength);
+			unsigned long long ID_of_AABB_We_are_in = cAABB::generateID(pPlayer->position, sideLength);
 
-			// Is there a box here? 
 			std::map< unsigned long long /*ID of the AABB*/, cAABB* >::iterator itAABB_Bunny
 				= ::g_pTheTerrain->m_mapAABBs.find(ID_of_AABB_We_are_in);
 
-			// Is there an AABB there? 
 			if (itAABB_Bunny != ::g_pTheTerrain->m_mapAABBs.end())
 			{
-				// Yes, then get the triangles and do narrow phase collision
-
-			//	std::cout << "ID = " << ID_of_AABB_We_are_in
-				//	<< " with " << itAABB_Bunny->second->vecTriangles.size() << " triangles" << std::endl;
 
 				vec_cur_AABB_tris = itAABB_Bunny->second->vecTriangles;
-				// *******************************************************************
-				// Here you can pass this vector of triangles into your narrow phase (aka project #1)
-				// and do whatever collision response you want
-				// *******************************************************************
+
 			}
 			else
 			{
 				if (vec_cur_AABB_tris.size() > 0) {
 					vec_cur_AABB_tris.clear();
 				}
-				//	std::cout << "ID = " << ID_of_AABB_We_are_in << " NOT PRESENT near bunny" << std::endl;
+				
 			}
 
 
@@ -492,13 +480,7 @@ int main(void)
 			for (; itAABB != ::g_pTheTerrain->m_mapAABBs.end(); itAABB++)
 			{
 
-				// You could draw a mesh cube object at the location, 
-				// but be careful that it's scalled and placed at the right location.
-				// i.e. our cube is centred on the origin and is ++2++ units wide, 
-				// because it's +1 unit from the centre (on all sides).
 
-				// Since this is debug, and the "draw debug line thing" is working, 
-				// this will just draw a bunch of lines... 
 
 				cAABB* pCurrentAABB = itAABB->second;
 
@@ -535,18 +517,9 @@ int main(void)
 					glm::mat4 iden = glm::mat4(1.0f);
 					DrawObject(pDebugCube, iden, program);
 				}
-				//DrawObject(pCubeForBallsToBounceIn, iden, program);
-
-
-				// Draw line from minXYZ to maxXYZ
-				//::g_pDebugRenderer->addLine(cubeCorners[0], cubeCorners[1],
-					//glm::vec3(1, 1, 1), 0.0f);
 			}
-		}// END OF: Scope for aabb debug stuff
-		// 
+		}
 
-
-		//std::sort(vec_sorted_drawObj.begin(), vec_sorted_drawObj.end(), transp);
 		std::sort(vec_transObj.begin(), vec_transObj.end(), distToCam);
 		
 		cMeshObject* pSkyBox = findObjectByFriendlyName("SkyBoxObject");
@@ -585,23 +558,23 @@ int main(void)
 
 
 		// Draw all the objects in the "scene"
-		for ( unsigned int objIndex = 0; 
-			  objIndex != (unsigned int)vec_non_transObj.size();
-			  objIndex++ )
-		{	
-			cMeshObject* pCurrentMesh = vec_non_transObj[objIndex];
-			
-			glm::mat4x4 matModel = glm::mat4(1.0f);			// mat4x4 m, p, mvp;
+		//for ( unsigned int objIndex = 0; 
+		//	  objIndex != (unsigned int)vec_non_transObj.size();
+		//	  objIndex++ )
+		//{	
+		//	cMeshObject* pCurrentMesh = vec_non_transObj[objIndex];
+		//	
+		//	glm::mat4x4 matModel = glm::mat4(1.0f);			// mat4x4 m, p, mvp;
 
-			DrawObject(pCurrentMesh, matModel, program);
+		//	DrawObject(pCurrentMesh, matModel, program);
 
-		}//for ( unsigned int objIndex = 0; 
+		//}//for ( unsigned int objIndex = 0; 
 
 		for (unsigned int objIndex = 0;
-			objIndex != (unsigned int)vec_transObj.size();
+			objIndex != (unsigned int)vec_pObjectsToDraw.size();
 			objIndex++)
 		{
-			cMeshObject* pCurrentMesh = vec_transObj[objIndex];
+			cMeshObject* pCurrentMesh = vec_pObjectsToDraw[objIndex];
 
 			glm::mat4x4 matModel = glm::mat4(1.0f);			// mat4x4 m, p, mvp;
 
@@ -686,6 +659,19 @@ int main(void)
 		// The physics update loop
 		DoPhysicsUpdate( deltaTime, vec_pObjectsToDraw );
 		sceneCommandGroup.Update(deltaTime);
+
+
+		//DELETE LASER BEAMS
+		for (int i = 0; i < vec_pObjectsToDraw.size(); i++)
+		{
+			if (vec_pObjectsToDraw[i]->bIsProjectile == true)
+			{
+				if (glm::distance(vec_pObjectsToDraw[i]->initPos, vec_pObjectsToDraw[i]->position) > 200.0f) 
+				{
+					vec_pObjectsToDraw.erase(vec_pObjectsToDraw.begin() + i);
+				}
+			}
+		}
 
 		
 		//::p_LuaScripts->Update(deltaTime);
@@ -843,15 +829,6 @@ cMeshObject* findObjectByUniqueID(unsigned int ID_to_find)
 
 void LoadTerrainAABB(void)
 {
-	// *******
-	// This REALLY should be inside the cAABBHierarchy, likely... 
-	// *******
-
-
-	// Read the graphics mesh object, and load the triangle info
-	//	into the AABB thing.
-	// Where is the mesh (do the triangles need to be transformed)??
-
 	cMeshObject* pTerrain = findObjectByFriendlyName("terrain");
 
 	sModelDrawInfo terrainMeshInfo;
@@ -860,16 +837,12 @@ void LoadTerrainAABB(void)
 	::g_pTheVAOMeshManager->FindDrawInfoByModelName(terrainMeshInfo);
 
 
-	// How big is our AABBs? Side length?
-	float sideLength = 20.0f;		// Play with this lenght
-									// Smaller --> more AABBs, fewer triangles per AABB
-									// Larger --> More triangles per AABB	
+
+	float sideLength = 20.0f;		
 
 	for (unsigned int triIndex = 0; triIndex != terrainMeshInfo.numberOfTriangles; triIndex++)
 	{
-		// for each triangle, for each vertex, determine which AABB the triangle should be in
-		// (if your mesh has been transformed, then you need to transform the tirangles 
-		//  BEFORE you do this... or just keep the terrain UNTRANSFORMED)
+
 
 		sPlyTriangle currentTri = terrainMeshInfo.pTriangles[triIndex];
 		
@@ -879,7 +852,7 @@ void LoadTerrainAABB(void)
 		currentVerts[1] = terrainMeshInfo.pVerticesFromFile[currentTri.vertex_index_2];
 		currentVerts[2] = terrainMeshInfo.pVerticesFromFile[currentTri.vertex_index_3];
 
-		// This is the structure we are eventually going to store in the AABB map...
+
 		cAABB::sAABB_Triangle curAABBTri;
 		curAABBTri.verts[0].x = currentVerts[0].x;
 		curAABBTri.verts[0].y = currentVerts[0].y;
@@ -891,14 +864,6 @@ void LoadTerrainAABB(void)
 		curAABBTri.verts[2].y = currentVerts[2].y;
 		curAABBTri.verts[2].z = currentVerts[2].z;
 
-		// Is the triangle "too big", and if so, split it (take centre and make 3 more)
-		// (Pro Tip: "too big" is the SMALLEST side is greater than HALF the AABB length)
-		// Use THOSE triangles as the test (and recursively do this if needed),
-		// +++BUT+++ store the ORIGINAL triangle info NOT the subdivided one
-		// 
-		// For the student to complete... 
-		// 
-
 
 		for (unsigned int vertIndex = 0; vertIndex != 3; vertIndex++)
 		{
@@ -907,69 +872,35 @@ void LoadTerrainAABB(void)
 				cAABB::generateID(curAABBTri.verts[0],
 					sideLength);
 
-			// Do we have this AABB alredy? 
 			std::map< unsigned long long/*ID AABB*/, cAABB* >::iterator itAABB
 				= ::g_pTheTerrain->m_mapAABBs.find(AABB_ID);
 
 			if (itAABB == ::g_pTheTerrain->m_mapAABBs.end())
 			{
-				// We DON'T have an AABB, yet
-
-
 
 				std::cout << cou++ << std::endl;
 
 
 
 				cAABB* pAABB = new cAABB();
-				// Determine the AABB location for this point
-				// (like the generateID() method...)
+
 				glm::vec3 minXYZ = curAABBTri.verts[0];
 				minXYZ.x = (floor(minXYZ.x / sideLength)) * sideLength;
 				minXYZ.y = (floor(minXYZ.y / sideLength)) * sideLength;
 				minXYZ.z = (floor(minXYZ.z / sideLength)) * sideLength;
 
-				//pAABB->setMinXYZ(minXYZ);
-				//pAABB->setSideLegth(sideLength);
 
 				pAABB->setCenter(minXYZ + sideLength / 2);
 				pAABB->setHalfLegth(sideLength/2);
 
-				// Note: this is the SAME as the AABB_ID...
 				unsigned long long the_AABB_ID = pAABB->getID();
-
 				::g_pTheTerrain->m_mapAABBs[the_AABB_ID] = pAABB;
-
-				// Then set the iterator to the AABB, by running find again
 				itAABB = ::g_pTheTerrain->m_mapAABBs.find(the_AABB_ID);
 
 
-
-				//cMeshObject* pCubeForBallsToBounceIn = new cMeshObject();
-				//
-				//pCubeForBallsToBounceIn->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
-				//pCubeForBallsToBounceIn->bDontLight = true;
-				//pCubeForBallsToBounceIn->position = pAABB->getCentre();
-				//pCubeForBallsToBounceIn->friendlyName = "CubeBallsBounceIn";
-				//pCubeForBallsToBounceIn->meshName = "cube_flat_shaded_xyz_n_uv.ply";		// "cube_flat_shaded_xyz.ply";
-				//pCubeForBallsToBounceIn->setUniformScale(sideLength);
-				//pCubeForBallsToBounceIn->bIsWireFrame = true;
-				// Cube is 2x2x2, so with a scale of 100x means it's
-				//	200x200x200, centred around the origin (0,0,0)
-				// The GROUND_PLANE_Y = -3.0f, so place it +97.0 lines up the 'bottom'
-				//pCubeForBallsToBounceIn->position = glm::vec3(0.0f, 97.0f, 0.0f);
-				//pCubeForBallsToBounceIn->bIsWireFrame = true;
-
-			//	pCubeForBallsToBounceIn->pDebugRenderer = ::g_pDebugRenderer;
-
-				//pTerrain->nonUniformScale = glm::vec3(0.1f,0.1f,0.1f);
-				//vec_pObjectsToDraw.push_back(pCubeForBallsToBounceIn);
+			}
 
 
-			}//if( itAABB == ::g_pTheTerrain->m_mapAABBs.end() )
-
-			// At this point, the itAABB ++IS++ pointing to an AABB
-			// (either there WAS one already, or I just created on)
 
 			itAABB->second->vecTriangles.push_back(curAABBTri);
 

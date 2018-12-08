@@ -72,6 +72,7 @@ public:
 	bool bIsWireFrame;	//  = true;  C++
 	bool bIsVisible;
 	bool bIsDebug;
+	bool bIsProjectile;
 
 	// ignore this for now...
 	// Around its own axis (NOT the origin)
@@ -99,7 +100,7 @@ public:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	glm::vec3 accel;		// acceleration
-
+	glm::vec3 initPos;
 	bool bIsUpdatedByPhysics;	// Phsyics "owns" the position	
 
 	float mass;

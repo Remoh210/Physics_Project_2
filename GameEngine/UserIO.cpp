@@ -1,6 +1,7 @@
 #include "globalOpenGLStuff.h"
 #include "globalStuff.h"
 #include <string>
+#include <glm/gtc/matrix_transform.hpp> 
 #include "Camera.h"
 //#include <vector>
 #include <iostream>
@@ -118,8 +119,87 @@ void key_callback( GLFWwindow* window,
 
 	}
 
+	//Shoot Lasers
+	if (glfwGetKey(window, GLFW_KEY_B))
+	{
+		//cMeshObject* beam = findObjectByFriendlyName("DebugSphere");
+		cMeshObject* leftWing = findObjectByFriendlyName("DebugSphereLeft");
+		cMeshObject* rightWing = findObjectByFriendlyName("DebugSphereLeft");
+		cMeshObject* xWing = findObjectByFriendlyName("xwing");
 
 
+
+
+
+		glm::vec4 beam_ModelSpace = glm::vec4(2.3692f, 0.0f, 5.0f, 1.0f);
+		glm::vec4 beam_ModelSpace2 = glm::vec4(-2.3692f, 0.0f, 5.0f, 1.0f);
+
+
+		glm::mat4 matTransform = glm::mat4(1.0f);
+		glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f),
+			xWing->position);
+
+		matTransform = matTransform * matTranslation;
+		glm::quat qRotation = xWing->getQOrientation();
+		glm::mat4 matQrotation = glm::mat4(qRotation);
+		matTransform = matTransform * matQrotation;
+
+		glm::vec4 beam_WorldSpace = glm::vec4(0.0f);
+		glm::vec4 beam_WorldSpace2 = glm::vec4(0.0f);
+
+		beam_WorldSpace = matTransform * beam_ModelSpace;
+		beam_WorldSpace2 = matTransform * beam_ModelSpace2;
+
+
+
+
+
+		cMeshObject* pBeam = new cMeshObject();
+		pBeam->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pBeam->friendlyName = "beam";
+		pBeam->meshName = "beam.ply";
+		pBeam->bIsWireFrame = false;
+		pBeam->bDontLight = true;
+		pBeam->bIsVisible = true;
+		float scale = 0.7f;
+		pBeam->nonUniformScale = glm::vec3(scale, scale, scale*2);
+		pBeam->position = beam_WorldSpace;
+		pBeam->initPos = beam_WorldSpace;
+		pBeam->bIsProjectile = true;
+		pBeam->bIsUpdatedByPhysics = true;
+		pBeam->bIsDebug = false;
+		pBeam->pTheShape = new sSphere(2.0f);
+		pBeam->shapeType = cMeshObject::SPHERE;
+		pBeam->setQOrientation(qRotation);
+		vec_pObjectsToDraw.push_back(pBeam);
+
+
+		cMeshObject* pBeam2 = new cMeshObject();
+		pBeam2->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+		pBeam2->friendlyName = "beam2";
+		pBeam2->meshName = "beam.ply";
+		pBeam2->bIsWireFrame = false;
+		pBeam2->bDontLight = true;
+		pBeam2->bIsVisible = true;
+		float scale2 = 0.7f;
+		pBeam2->nonUniformScale = glm::vec3(scale2, scale2, scale2*2);
+		pBeam2->position = beam_WorldSpace2;
+		pBeam2->initPos = beam_WorldSpace2;
+		pBeam2->bIsProjectile = true;
+		pBeam2->bIsUpdatedByPhysics = true;
+		pBeam2->bIsDebug = false;
+		pBeam2->pTheShape = new sSphere(2.0f);
+		pBeam2->shapeType = cMeshObject::SPHERE;
+		pBeam2->setQOrientation(qRotation);
+		vec_pObjectsToDraw.push_back(pBeam2);
+
+
+		
+		//pBeam->bIsVisible = true;
+		pBeam2->velocity = xWing->velocity * 15.0f;
+		pBeam->velocity = xWing->velocity * 15.0f;
+
+	}
 
 
 	if (key == GLFW_KEY_L && action == GLFW_PRESS)
@@ -311,8 +391,8 @@ void ProcessAsynKeys(GLFWwindow* window)
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE)) 
 	{ 
-		if (xwingSpeed < 50) {
-			xwingSpeed += 0.2f;
+		if (xwingSpeed < 100) {
+			xwingSpeed += 0.1f;
 		}
 		
 	}
@@ -417,8 +497,8 @@ void ProcessAsynKeys(GLFWwindow* window)
 		//if ( glfwGetKey( window, GLFW_KEY_Z ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f); 	}//Red
 		//if ( glfwGetKey( window, GLFW_KEY_X ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);	}//Green
 		if ( glfwGetKey( window, GLFW_KEY_C ) )	{   LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);    }//Blue
-		if ( glfwGetKey( window, GLFW_KEY_V ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);	}
-		if ( glfwGetKey( window, GLFW_KEY_B ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	}
+		//if ( glfwGetKey( window, GLFW_KEY_V ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);	}
+		//if ( glfwGetKey( window, GLFW_KEY_B ) )	{	LightManager->vecLights.at(lightIndex)->diffuse = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	}
 
 
 		//change lightype
@@ -509,8 +589,8 @@ void ProcessAsynKeys(GLFWwindow* window)
 		//if ( glfwGetKey( window, GLFW_KEY_X ) )		{ vec_pObjectsToDraw.at(index)->postRotation.z += 0.1f; }
 		//if ( glfwGetKey( window, GLFW_KEY_C ) )		{ vec_pObjectsToDraw.at(index)->postRotation.z -= 0.1f; }
 
-		if (glfwGetKey(window, GLFW_KEY_V)) { vec_pObjectsToDraw.at(index)->nonUniformScale += 0.2f; }
-		if (glfwGetKey(window, GLFW_KEY_B)) { vec_pObjectsToDraw.at(index)->nonUniformScale -= 0.2f; }
+		//if (glfwGetKey(window, GLFW_KEY_V)) { vec_pObjectsToDraw.at(index)->nonUniformScale += 0.2f; }
+		//if (glfwGetKey(window, GLFW_KEY_B)) { vec_pObjectsToDraw.at(index)->nonUniformScale -= 0.2f; }
 
 
 
