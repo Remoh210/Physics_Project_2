@@ -211,18 +211,55 @@ int main(void)
 	CreateModels("Models2.txt", ::g_pTheVAOMeshManager, program);
 	LoadModelsIntoScene(::vec_pObjectsToDraw);
 
-	//vec_sorted_drawObj = vec_pObjectsToDraw;
+	
+	cMeshObject* pTerrain = findObjectByFriendlyName("terrain");
+	sModelDrawInfo terrainMeshInfo;
+	terrainMeshInfo.meshFileName = pTerrain->meshName;
+	::g_pTheVAOMeshManager->FindDrawInfoByModelName(terrainMeshInfo);
 
-			// Draw all the objects in the "scene"
-	//for (unsigned int objIndex = 0;
-	//	objIndex != (unsigned int)vec_pObjectsToDraw.size();
-	//	objIndex++)
-	//{
-	//	cMeshObject* pCurrentMesh = vec_pObjectsToDraw[objIndex];
-	//	if (pCurrentMesh->materialDiffuse.a < 1.0f) { vec_transObj.push_back(pCurrentMesh); }
-	//	else { vec_non_transObj.push_back(pCurrentMesh); }
+	for (int i = 0; i < 5; i++)
+	{
+		sPlyVertex randVert = terrainMeshInfo.pVerticesFromFile[rand() % terrainMeshInfo.numberOfVertices];
+		cMeshObject* moonBase = new cMeshObject();
+		moonBase->position = glm::vec3(randVert.x, randVert.y, randVert.z);
+		moonBase->setDiffuseColour(glm::vec3(0.0f, 0.0f, 0.0f));
+		moonBase->friendlyName = "base";
+		moonBase->meshName = "moon_base.ply";
+		//moonBase->bIsWireFrame = true;
+		//moonBase->bDontLight = true;
+		moonBase->bIsVisible = true;
+		//float scale = 1.0f;
+		//moonBase->nonUniformScale = glm::vec3(scale, scale, scale);
+		moonBase->bIsUpdatedByPhysics = true;
+		sTextureInfo moonTex;
+		moonTex.strength = 1.0f;
+		moonTex.name = "moon_baseTex.bmp";
+		moonBase->vecTextures.push_back(moonTex);
+		float scale = 10.0f;
+		moonBase->pTheShape = new sSphere(scale);
+		moonBase->shapeType = cMeshObject::SPHERE;
+		vec_pObjectsToDraw.push_back(moonBase);
 
-	//}//for ( unsigned int objIndex = 0; 
+
+
+
+		cMeshObject* pSphereNose = new cMeshObject();
+		pSphereNose->setDiffuseColour(glm::vec3(0.0f, 1.0f, 0.0f));
+		pSphereNose->friendlyName = "debugmoon";
+		pSphereNose->meshName = "Sphere_320.ply";
+		pSphereNose->bIsWireFrame = true;
+		pSphereNose->bDontLight = true;
+		pSphereNose->bIsVisible = false;
+		pSphereNose->nonUniformScale = glm::vec3(scale, scale, scale);
+		pSphereNose->position = moonBase->position;
+		pSphereNose->bIsUpdatedByPhysics = false;
+		pSphereNose->bIsDebug = true;
+		//pSphereNose->pDebugRenderer = ::g_pDebugRenderer;
+		vec_pObjectsToDraw.push_back(pSphereNose);
+
+
+
+	}
 
 
 	LoadTerrainAABB();
@@ -379,7 +416,7 @@ int main(void)
 	//::p_LuaScripts->LoadScriptFile("example.lua");
 
 	
-
+	
 
 	//*****************************************************************
 	

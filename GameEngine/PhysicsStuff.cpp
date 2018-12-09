@@ -284,6 +284,8 @@ void DoPhysicsUpdate( double fDeltaTime,
 						
 						if ( (pObjectA->shapeType == cMeshObject::SPHERE) && (pObjectB->shapeType == cMeshObject::SPHERE) )
 						{
+							if (pObjectA->friendlyName == "base" || pObjectA->friendlyName == "beam") { pObjectA->bIsVisible = false; }
+							else if (pObjectA->friendlyName == "beam" || pObjectA->friendlyName == "base") { pObjectA->bIsVisible = false; }
 							// If it's a Sphere-Sphere, make the intersection lines yellow
 							//::g_pDebugRenderer->addLine( pObjectA->position, pObjectB->position, 
 							//							 glm::vec3( 1.0f, 1.0f, 0.0f ), 

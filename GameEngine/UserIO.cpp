@@ -48,8 +48,8 @@ void key_callback( GLFWwindow* window,
 {
 	
 
-	if (b_debugMode) { findObjectByFriendlyName("xwing")->bIsVisible = false; }
-	else { findObjectByFriendlyName("xwing")->bIsVisible = true; }
+	//if (b_debugMode) { findObjectByFriendlyName("xwing")->bIsVisible = false; }
+	//else { findObjectByFriendlyName("xwing")->bIsVisible = true; }
 
 
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -96,7 +96,7 @@ void key_callback( GLFWwindow* window,
 	if (glfwGetKey(window, GLFW_KEY_1))
 	{
 		b_debugMode = true;
-		findObjectByFriendlyName("xwing")->velocity = glm::vec3(0.0f);
+		//findObjectByFriendlyName("xwing")->velocity = glm::vec3(0.0f);
 		swithDebugMode(b_debugMode, vec_pObjectsToDraw);
 
 	}
@@ -794,4 +794,5 @@ void swithDebugMode(bool debug, std::vector<cMeshObject*> models)
 			}
 		}
 	}
+	return;
 }

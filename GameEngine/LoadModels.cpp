@@ -28,6 +28,11 @@ void LoadModelTypes( cVAOMeshManager* pTheVAOMeshManager, GLuint shaderProgramID
 	cube1x1x1.meshFileName = "cube_flat_shaded_xyz_n_uv.ply";			// "cube_flat_shaded_xyz.ply";
 	pTheVAOMeshManager->LoadModelIntoVAO(cube1x1x1, shaderProgramID);
 
+
+	sModelDrawInfo beam;
+	beam.meshFileName = "beam.ply";			// "cube_flat_shaded_xyz.ply";
+	pTheVAOMeshManager->LoadModelIntoVAO(beam, shaderProgramID);
+
 	//sModelDrawInfo terrain;
 	//terrain.meshFileName = "terrain.ply";			// "cube_flat_shaded_xyz.ply";
 	//pTheVAOMeshManager->LoadModelIntoVAO(terrain, shaderProgramID);

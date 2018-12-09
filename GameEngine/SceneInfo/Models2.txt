@@ -59,14 +59,16 @@ IsVisible  1
 IsUpdByPhys  1
 IsWireFrame  0
 Textures:  0
-friendly_Name beam
-Mesh_Name beam.ply
+Friendly_Name moon_base
+Mesh_Name moon_base.ply
 Position 0 0 0
-DiffureRGB_Alpha  1 0.8 0.5 1
+DiffureRGB_Alpha  0 0 0 1
 SpecularRGB_Power 1 1 1 100
-QuatXYZW_rotation 0 0.0998336 0 0.995005
-Scale  15.4 15.4 15.4
+QuatXYZW_rotation 0 0 0 1
+Scale  1 1 1
 IsVisible  1
-IsUpdByPhys  1
+IsUpdByPhys  0
 IsWireFrame  0
-Textures:  0
+Textures: 1
+Texture0_name moon_baseTex.bmp
+Texture0_strength 1
