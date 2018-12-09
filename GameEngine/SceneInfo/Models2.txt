@@ -66,7 +66,7 @@ DiffureRGB_Alpha  0 0 0 1
 SpecularRGB_Power 1 1 1 100
 QuatXYZW_rotation 0 0 0 1
 Scale  1 1 1
-IsVisible  1
+IsVisible  0
 IsUpdByPhys  0
 IsWireFrame  0
 Textures: 1

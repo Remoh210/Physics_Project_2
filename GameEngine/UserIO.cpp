@@ -9,7 +9,7 @@
 float speed = 50.0f;
 int index = 0;
 // This has all the keyboard, mouse, and controller stuff
-
+double dtime = 1.0f;
 extern sLight* pTheOneLight;	//  = NULL;
 
 int lightIndex = 0;
@@ -29,6 +29,7 @@ bool bMouseInWindow = false;
 
 bool IsPicked = false;
 void commandsInterface();
+void shoot();
 
 cMeshObject* CloseToObj(std::vector<cMeshObject*> models);
 
@@ -122,83 +123,9 @@ void key_callback( GLFWwindow* window,
 	//Shoot Lasers
 	if (glfwGetKey(window, GLFW_KEY_B))
 	{
-		//cMeshObject* beam = findObjectByFriendlyName("DebugSphere");
-		cMeshObject* leftWing = findObjectByFriendlyName("DebugSphereLeft");
-		cMeshObject* rightWing = findObjectByFriendlyName("DebugSphereLeft");
-		cMeshObject* xWing = findObjectByFriendlyName("xwing");
-
-
-
-
-
-		glm::vec4 beam_ModelSpace = glm::vec4(2.3692f, 0.0f, 5.0f, 1.0f);
-		glm::vec4 beam_ModelSpace2 = glm::vec4(-2.3692f, 0.0f, 5.0f, 1.0f);
-
-
-		glm::mat4 matTransform = glm::mat4(1.0f);
-		glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f),
-			xWing->position);
-
-		matTransform = matTransform * matTranslation;
-		glm::quat qRotation = xWing->getQOrientation();
-		glm::mat4 matQrotation = glm::mat4(qRotation);
-		matTransform = matTransform * matQrotation;
-
-		glm::vec4 beam_WorldSpace = glm::vec4(0.0f);
-		glm::vec4 beam_WorldSpace2 = glm::vec4(0.0f);
-
-		beam_WorldSpace = matTransform * beam_ModelSpace;
-		beam_WorldSpace2 = matTransform * beam_ModelSpace2;
-
-
-
-
-
-		cMeshObject* pBeam = new cMeshObject();
-		pBeam->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
-		pBeam->friendlyName = "beam";
-		pBeam->meshName = "beam.ply";
-		pBeam->bIsWireFrame = false;
-		pBeam->bDontLight = true;
-		pBeam->bIsVisible = true;
-		float scale = 0.7f;
-		pBeam->nonUniformScale = glm::vec3(scale, scale, scale*2);
-		pBeam->position = beam_WorldSpace;
-		pBeam->initPos = beam_WorldSpace;
-		pBeam->bIsProjectile = true;
-		pBeam->bIsUpdatedByPhysics = true;
-		pBeam->bIsDebug = false;
-		pBeam->pTheShape = new sSphere(2.0f);
-		pBeam->shapeType = cMeshObject::SPHERE;
-		pBeam->setQOrientation(qRotation);
-		vec_pObjectsToDraw.push_back(pBeam);
-
-
-		cMeshObject* pBeam2 = new cMeshObject();
-		pBeam2->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
-		pBeam2->friendlyName = "beam2";
-		pBeam2->meshName = "beam.ply";
-		pBeam2->bIsWireFrame = false;
-		pBeam2->bDontLight = true;
-		pBeam2->bIsVisible = true;
-		float scale2 = 0.7f;
-		pBeam2->nonUniformScale = glm::vec3(scale2, scale2, scale2*2);
-		pBeam2->position = beam_WorldSpace2;
-		pBeam2->initPos = beam_WorldSpace2;
-		pBeam2->bIsProjectile = true;
-		pBeam2->bIsUpdatedByPhysics = true;
-		pBeam2->bIsDebug = false;
-		pBeam2->pTheShape = new sSphere(2.0f);
-		pBeam2->shapeType = cMeshObject::SPHERE;
-		pBeam2->setQOrientation(qRotation);
-		vec_pObjectsToDraw.push_back(pBeam2);
-
-
-		
-		//pBeam->bIsVisible = true;
-		pBeam2->velocity = xWing->velocity * 15.0f;
-		pBeam->velocity = xWing->velocity * 15.0f;
-
+		if (!b_landingMode) {
+			shoot();
+		}
 	}
 
 
@@ -402,15 +329,33 @@ void ProcessAsynKeys(GLFWwindow* window)
 		}
 	}
 
+	if (glfwGetKey(window, GLFW_KEY_LEFT))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.007f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_RIGHT))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.007f, 0.0f));
+	}
+	if (glfwGetKey(window, GLFW_KEY_UP))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.007f, 0.0f, 0.0f));
+
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN))
+	{
+		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.007f, 0.0f, 0.0f));
+
+	}
 
 
 
 	if(camera.b_controlledByScript){
-	if (glfwGetKey(window, GLFW_KEY_Z))
+	if (glfwGetKey(window, GLFW_KEY_Q))
 	{
 		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0f, -0.01f));
 	}
-	if (glfwGetKey(window, GLFW_KEY_X))
+	if (glfwGetKey(window, GLFW_KEY_E))
 	{
 		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.0f, 0.01f));
 	}
@@ -449,16 +394,16 @@ void ProcessAsynKeys(GLFWwindow* window)
 		{
 			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.01f, 0.0f));
 		}
-		if (glfwGetKey(window, GLFW_KEY_E))
-		{
-			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f));
-
-		}
-		if (glfwGetKey(window, GLFW_KEY_Q))
-		{
-			pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f));
-
-		}
+	//	//if (glfwGetKey(window, GLFW_KEY_E))
+	//	{
+	//		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.01f, 0.0f, 0.0f));
+	//
+	//	}
+	//	//if (glfwGetKey(window, GLFW_KEY_Q))
+	//	{
+	//		pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.01f, 0.0f, 0.0f));
+	//
+	//	}
 	}
 
 	}
@@ -466,6 +411,17 @@ void ProcessAsynKeys(GLFWwindow* window)
 	
 
 	if ( glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS  )
+	{
+		
+		//if (dtime > 0.01) {
+		//	double currenTime = glfwGetTime();
+		//	shoot();
+		//	double newTime = glfwGetTime();
+		//	dtime = newTime - currenTime;
+		//}
+	}
+
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
 		cameraSpeed = CAMERA_SPEED_FAST;
 	}
@@ -795,4 +751,85 @@ void swithDebugMode(bool debug, std::vector<cMeshObject*> models)
 		}
 	}
 	return;
+}
+
+
+void shoot() 
+{
+	//cMeshObject* beam = findObjectByFriendlyName("DebugSphere");
+	cMeshObject* leftWing = findObjectByFriendlyName("DebugSphereLeft");
+	cMeshObject* rightWing = findObjectByFriendlyName("DebugSphereLeft");
+	cMeshObject* xWing = findObjectByFriendlyName("xwing");
+
+
+
+
+
+	glm::vec4 beam_ModelSpace = glm::vec4(2.3692f, 0.0f, 5.0f, 1.0f);
+	glm::vec4 beam_ModelSpace2 = glm::vec4(-2.3692f, 0.0f, 5.0f, 1.0f);
+
+
+	glm::mat4 matTransform = glm::mat4(1.0f);
+	glm::mat4 matTranslation = glm::translate(glm::mat4(1.0f),
+		xWing->position);
+
+	matTransform = matTransform * matTranslation;
+	glm::quat qRotation = xWing->getQOrientation();
+	glm::mat4 matQrotation = glm::mat4(qRotation);
+	matTransform = matTransform * matQrotation;
+
+	glm::vec4 beam_WorldSpace = glm::vec4(0.0f);
+	glm::vec4 beam_WorldSpace2 = glm::vec4(0.0f);
+
+	beam_WorldSpace = matTransform * beam_ModelSpace;
+	beam_WorldSpace2 = matTransform * beam_ModelSpace2;
+
+
+
+
+
+	cMeshObject* pBeam = new cMeshObject();
+	pBeam->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+	pBeam->friendlyName = "beam";
+	pBeam->meshName = "beam.ply";
+	pBeam->bIsWireFrame = false;
+	pBeam->bDontLight = true;
+	pBeam->bIsVisible = true;
+	float scale = 0.7f;
+	pBeam->nonUniformScale = glm::vec3(scale, scale, scale * 2);
+	pBeam->position = beam_WorldSpace;
+	pBeam->initPos = beam_WorldSpace;
+	pBeam->bIsProjectile = true;
+	pBeam->bIsUpdatedByPhysics = true;
+	pBeam->bIsDebug = false;
+	pBeam->pTheShape = new sSphere(2.0f);
+	pBeam->shapeType = cMeshObject::SPHERE;
+	pBeam->setQOrientation(qRotation);
+	vec_pObjectsToDraw.push_back(pBeam);
+
+
+	cMeshObject* pBeam2 = new cMeshObject();
+	pBeam2->setDiffuseColour(glm::vec3(1.0f, 0.0f, 0.0f));
+	pBeam2->friendlyName = "beam2";
+	pBeam2->meshName = "beam.ply";
+	pBeam2->bIsWireFrame = false;
+	pBeam2->bDontLight = true;
+	pBeam2->bIsVisible = true;
+	float scale2 = 0.7f;
+	pBeam2->nonUniformScale = glm::vec3(scale2, scale2, scale2 * 2);
+	pBeam2->position = beam_WorldSpace2;
+	pBeam2->initPos = beam_WorldSpace2;
+	pBeam2->bIsProjectile = true;
+	pBeam2->bIsUpdatedByPhysics = true;
+	pBeam2->bIsDebug = false;
+	pBeam2->pTheShape = new sSphere(2.0f);
+	pBeam2->shapeType = cMeshObject::SPHERE;
+	pBeam2->setQOrientation(qRotation);
+	vec_pObjectsToDraw.push_back(pBeam2);
+
+
+
+	//pBeam->bIsVisible = true;
+	pBeam2->velocity = xWing->velocity * 15.0f;
+	pBeam->velocity = xWing->velocity * 15.0f;
 }

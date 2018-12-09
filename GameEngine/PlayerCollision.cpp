@@ -13,10 +13,16 @@ void PlayerCollisionTest(double deltaTime, GLuint shaderProgramID)
 	cMeshObject* pDebugSphereNose = findObjectByFriendlyName("DebugSphereNose");
 	
 	if (b_landingMode == false ) {
-		if (camera.Front.y > 0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.005f, 0.0f, 0.0f), false); }
-		if (camera.Front.y < -0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.005f, 0.0f, 0.0f), false); }
-		if (camera.Front.x < 0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.005f, 0.0f), false); }
-		if (camera.Front.x > -0.25f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.005f, 0.0f), false); }
+		if (camera.Front.y > 0.20f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.005f, 0.0f, 0.0f), false); }
+		if (camera.Front.y < -0.20f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.005f, 0.0f, 0.0f), false); }
+		if (camera.Front.x < 0.20f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0f, 0.005f, 0.0f), false); }
+		if (camera.Front.x > -0.20f) { pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.005f, 0.0f), false); }
+
+		//pPlayer->setMeshOrientationEulerAngles(glm::vec3(camera.Front.y/10, cameraFront.x/10, 0.0f), false);
+		//pPlayer->adjMeshOrientationEulerAngles(glm::vec3(-0.005f, 0.0f, 0.0f), false);
+		//pPlayer->setMeshOrientationEulerAngles(glm::vec3(0.0f, camera.Front.x, 0.0f), false);
+		//pPlayer->adjMeshOrientationEulerAngles(glm::vec3(0.0, -0.005f, 0.0f), false); 
+
 		glm::vec4 vecForwardDirection_ModelSpace = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
 		glm::quat qPlayer29Rotation = pPlayer->getQOrientation();
