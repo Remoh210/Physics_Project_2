@@ -84,13 +84,13 @@ void key_callback( GLFWwindow* window,
 
 	if (key == GLFW_KEY_H && action == GLFW_PRESS)
 	{
-		SwitchToWireFrame(vec_pObjectsToDraw);
+		//SwitchToWireFrame(vec_pObjectsToDraw);
 	}
 	
 
 	if (glfwGetKey(window, GLFW_KEY_K))
 	{
-		SwitchToSolid(vec_pObjectsToDraw);
+		//SwitchToSolid(vec_pObjectsToDraw);
 	}
 
 
@@ -318,7 +318,7 @@ void ProcessAsynKeys(GLFWwindow* window)
 
 	if (glfwGetKey(window, GLFW_KEY_SPACE)) 
 	{ 
-		if (xwingSpeed < 100) {
+		if (xwingSpeed < 400) {
 			xwingSpeed += 0.1f;
 		}
 		
